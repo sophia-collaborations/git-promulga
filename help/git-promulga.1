@@ -1,0 +1,97 @@
+.TH GIT-PROMULGA 1
+.SH NAME
+git-promulga - A nutbag system for advanced synchronization operations in Git.
+.SH SYNOPSIS
+.B git-promulga
+[\fIoptions\fR]
+.SH DESCRIPTION
+\fBgit-promulga\fR does advanced synchronization-related operations
+that are configured specifically for each individual clone of a
+Git repository.
+
+The first thing that \fBgit-promulga\fR is
+search for the containing \fBgit-promulga\fR eligible
+directory.
+To do this, it keeps searching up and up the directory tree
+(starting with the current-working-directory
+and moving on up)
+until it finds a containing directory
+that contains within it a sub-directory named \(dqgit\(dq
+(which is the sign it checks for presence in a Git
+directory) as well as the file \(dq.promulga/main.dat\(dq
+(who's presence automatically implies the existence of
+the \(dq.promulga\(dq sub-direrectory.
+
+The last criterion \fBgit-promulga\fR looks for is
+that the \(dq.gitignore\(dq file has the line \(dq/.promulga\(dq.
+It checks for this because the contents of the
+\(dq.promulga\(dq directory are specific
+to individual clones of the repository.
+For this reason, if it does not find that line
+in the \(dq.gitignore\(dq file, the current directory
+will fail the test for promulgation eligibility,
+and the search will continue to the next
+directory up the tree.
+
+So in short - \fBgit-promulga\fR is looking for
+the head directory of a git project who's local clone
+is configured for \fBgit-promulga\fR.
+When it finds that directory,
+it loads the contents of the \(dq.promulga/main.dat\(dq
+file (known as the \(dqdirective file\(dq), and carries out every
+directive in that
+file that is applicable to the mode that it is
+being run in (which is \(dqmain\(dq by default, but can
+be changed by the \fB-md\fR command-line option described
+in the section of this manual page labeled \(dqOptions\(dq).
+
+For more information on the structure of the directive file, see
+the section of this manual-page labeled \(dqThe Directive File\(dq.
+.SH OPTIONS
+The options are processed in the order that they appear on the command line.
+Each option overrides any earlier option to it's contrary.
+.TP
+.BR --help
+Displays this help file - and exits the program once
+you are finished reading it.
+.TP
+.BR -md " " [\fImode\fR]
+Sets the mode (which in turn determines which directives are
+carried out) to the one identified by the name \fImode\fR.
+A mode-name should only have alphanumeric characters in it -
+and is case-sensitive.
+The default value is \(dqmode\(dq.
+.SH THE DIRECTIVE FILE
+There are two kinds of lines in the Directive File -
+validation lines and directive lines.
+
+.RS 3
+main:\fIvalid\fR:
+.br
+out/in:\fIvalid\fR:
+.br
+*:\fIsh\fR:git add --all
+.br
+*:\fIsh\fR:git commit
+.br
+main/in:\fIsh\fR:git pull origin master
+.br
+main/out:\fIsh\fR:git push origin master
+.RE
+
+Let's look at it again - this time with line-number labels
+for reference sake:
+
+.RS 3
+ \fB1\fR: main:\fIvalid\fR:
+.br
+ \fB2\fR: out/in:\fIvalid\fR:
+.br
+ \fB3\fR: *:\fIsh\fR:git add --all
+.br
+ \fB4\fR: *:\fIsh\fR:git commit
+.br
+ \fB5\fR: main/in:\fIsh\fR:git pull origin master
+.br
+ \fB6\fR: main/out:\fIsh\fR:git push origin master
+.RE

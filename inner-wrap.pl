@@ -17,6 +17,10 @@ sub opto__mode__do {
   $promlg_mode = &argola::getrg();
 } &argola::setopt('-md',\&opto__mode__do);
 
+
+
+&argola::help_opt('--help','help/git-promulga.1');
+
 &argola::runopts();
 
 
