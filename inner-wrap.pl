@@ -27,7 +27,7 @@ sub opto__mode__do {
 # Now we keep going up and up one directory at a time
 # until we reach what we are looking for.
 &me::checkit::cycle();
-while ( $max_updir < 0.5 )
+while ( $max_updir > 0.5 )
 {
   chdir('..');
   &me::checkit::cycle();
