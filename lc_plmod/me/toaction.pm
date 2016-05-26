@@ -1,6 +1,8 @@
 package me::toaction;
 use wraprg;
 use me::modus;
+use me::var_lit;
+use me::brancha;
 use strict;
 
 
@@ -123,6 +125,19 @@ git-promulga: FATAL ERROR:
     }
     return;
   }
+  
+  # Now two directives for writing variables literally:
+  if ( $lc_segtyp eq 'lit-new' ) { &me::var_lit::do_new($lc_segcon); return; }
+  if ( $lc_segtyp eq 'lit-add' ) { &me::var_lit::do_add($lc_segcon); return; }
+  
+  # To set the remotes we currently interact with:
+  if ( $lc_segtyp eq 'remotes' ) { &me::modus::remote_set_cm($lc_segcon); return; }
+  
+  # To merge various branches:
+  if ( $lc_segtyp eq 'merge' ) { &me::brancha::do_merge($lc_segcon); return; }
+  # And sync them with the remotes
+  if ( $lc_segtyp eq 'pull' ) { &me::brancha::do_pull($lc_segcon); return; }
+  if ( $lc_segtyp eq 'push' ) { &me::brancha::do_push($lc_segcon); return; }
   
   # Now, a directive for when promulgation here implies
   # also some promulgation of a directory higher up in

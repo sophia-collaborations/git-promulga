@@ -6,6 +6,7 @@ my $mod_rqs; # A place for 'continue-upward' directives to request mode
 my $strbrnc; # The branch we start out with
 my $alrt = '';
 my $exitor; # 10 if exit upon processing - 0 otherwise:
+my @remotes; # The list of remotes currently interacted with
 
 sub set {
   $mod_set = $_[0];
@@ -71,6 +72,24 @@ sub set_exit {
 
 sub get_exit {
   return $exitor;
+}
+
+sub remote_set_cm {
+  my @lc_raw;
+  my @lc_nrw;
+  my $lc_ech;
+  @lc_raw = split(/:/,$_[0]);
+  @lc_nrw = ();
+  foreach $lc_ech (@lc_raw)
+  {
+    if ( $lc_ech ne '' ) { @lc_nrw = (@lc_nrw,$lc_ech); }
+  }
+  @remotes = @lc_nrw;
+  return @lc_nrw;
+}
+
+sub remote_get {
+  return @remotes;
 }
 
 
