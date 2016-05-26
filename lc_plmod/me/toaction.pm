@@ -1,4 +1,5 @@
 package me::toaction;
+use wraprg;
 use me::modus;
 use strict;
 
@@ -11,7 +12,14 @@ sub go {
   my $lc_filca;
   my @lc_filcb;
   my $lc_filcc;
+  
+  # We must know what mode we are on:
   $moda = &me::modus::get();
+  
+  # We must know what branch this clone is on
+  # to start with:
+  &me::modus::brnc_fnd();
+  
   $validty = 0;
   $lc_filca = `cat .promulga/main.dat`;
   @lc_filcb = split(/\n/,$lc_filca);
@@ -62,6 +70,41 @@ sub aline {
   {
     system("git add --all");
     system("git commit");
+    return;
+  }
+  
+  # Now a directive to change what branch you are on.
+  if ( $lc_segtyp eq 'branch' )
+  {
+    my $lc2_mod;
+    my $lc2_segcon;
+    my @lc2_segls;
+    my $lc2_sege;
+    my $lc2_now;
+    ($lc2_mod,$lc2_segcon) = split(/:/,$lc_segcon,2);
+    $lc2_mod = &me::modus::brnc_trp($lc2_mod);
+    
+    # First, the basic mode-swapping:
+    system(('git checkout ' . &wraprg::bsc($lc2_mod) . ' --'));
+    
+    # Now for the options:
+    @lc2_segls = split(/:/,$lc2_segcon);
+    foreach $lc2_sege (@lc2_segls)
+    {
+      if ( $lc2_sege eq 'die' )
+      {
+        $lc2_now = &me::modus::brnc_id();
+        if ( $lc2_now ne $lc2_mod )
+        {
+          die ('
+git-promulga: FATAL ERROR:
+    Could not switch to Git branch: ' . $lc2_mod . ':
+
+')
+          ;
+        }
+      }
+    }
     return;
   }
   

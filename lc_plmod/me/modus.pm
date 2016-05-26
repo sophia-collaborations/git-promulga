@@ -3,6 +3,7 @@ use strict;
 
 my $mod_set; # The current mode in which the program is running
 my $mod_rqs; # A place for 'continue-upward' directives to request mode
+my $strbrnc; # The branch we start out with
 my $alrt = '';
 my $exitor; # 10 if exit upon processing - 0 otherwise:
 
@@ -12,6 +13,36 @@ sub set {
 
 sub get {
   return $mod_set;
+}
+
+sub brnc_fnd {
+  # This function should be called at the start of the
+  # processing of a project's head-directory and only
+  # then - to find out what branch the project starts
+  # at and register that information.
+  $strbrnc = &brnc_id();
+  return $strbrnc;
+}
+
+sub brnc_id {
+  # This function identifies at any given time what
+  # branch we are presently on. The reason it was
+  # separated from the rest of &brnc_fnd() is because
+  # it is needed at times to assess the success of
+  # branch-swapping operations.
+  my $lc_a;
+  $lc_a = `git rev-parse --abbrev-ref HEAD`;
+  chomp($lc_a);
+  return $lc_a;
+}
+
+sub brnc_get {
+  return $strbrnc;
+}
+
+sub brnc_trp {
+  if ( $_[0] eq '*' ) { return $strbrnc; }
+  return $_[0];
 }
 
 sub rqs_set {
