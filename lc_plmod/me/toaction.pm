@@ -91,6 +91,8 @@ sub aline {
     @lc2_segls = split(/:/,$lc2_segcon);
     foreach $lc2_sege (@lc2_segls)
     {
+      # This option makes it a fatal-error if the branch
+      # switching directive is not successful.
       if ( $lc2_sege eq 'die' )
       {
         $lc2_now = &me::modus::brnc_id();
@@ -102,6 +104,18 @@ git-promulga: FATAL ERROR:
 
 ')
           ;
+        }
+      }
+      
+      # This option attempts to force the creation of the
+      # desired branch if the initial attempt to switch
+      # to it is not successful.
+      if ( $lc2_sege eq 'frc' )
+      {
+        $lc2_now = &me::modus::brnc_id();
+        if ( $lc2_now ne $lc2_mod )
+        {
+          system(('git checkout -b ' . &wraprg::bsc($lc2_mod)));
         }
       }
     }
