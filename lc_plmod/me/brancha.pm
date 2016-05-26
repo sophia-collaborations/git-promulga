@@ -33,17 +33,14 @@ sub do_merge {
 }
 
 sub do_pull {
-  &meta_pull($_[0],'x-');
+  my $lc_a;
+  $lc_a = &me::systo::do_prcget();
+  &me::systo::do_prcset('x-');
+  &do_prc_pull($_[0]);
+  &me::systo::do_prcset($lc_a);
 }
 
 sub do_prc_pull {
-  my $lc_a;
-  my $lc_b;
-  ($lc_a,$lc_b) = split(/:/,$_[0],2);
-  &meta_pull($lc_b,$lc_a);
-}
-
-sub meta_pull {
   my @lc_list;
   my @lc_remos;
   my $lc_e_br_a;
@@ -69,17 +66,14 @@ sub meta_pull {
 }
 
 sub do_push {
-  &meta_push($_[0],'x-');
+  my $lc_a;
+  $lc_a = &me::systo::do_prcget();
+  &me::systo::do_prcset('x-');
+  &do_prc_push($_[0]);
+  &me::systo::do_prcset($lc_a);
 }
 
 sub do_prc_push {
-  my $lc_a;
-  my $lc_b;
-  ($lc_a,$lc_b) = split(/:/,$_[0],2);
-  &meta_push($lc_b,$lc_a);
-}
-
-sub meta_push {
   my @lc_list;
   my @lc_remos;
   my $lc_e_br_a;
@@ -97,7 +91,7 @@ sub meta_push {
       {
         foreach $lc_e_rm (@lc_remos)
         {
-          &me::systo::do_prcsh($_[1] . ':git push ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
+          &me::systo::do_prcsh('git push ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
         }
       }
     }

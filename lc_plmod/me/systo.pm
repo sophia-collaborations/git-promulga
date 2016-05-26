@@ -1,6 +1,14 @@
 package me::systo;
 use strict;
 
+my $prcval;
+
+sub do_prcset {
+  ($prcval) = split(/:/,$_[0]);
+}
+sub do_prcget {
+  return $prcval;
+}
 
 sub do_prcsh {
   my $lc_modsr;
@@ -9,7 +17,8 @@ sub do_prcsh {
   my @lc_moda;
   my $lc_modb;
   
-  ($lc_modsr,$lc_shel) = split(/:/,$_[0],2);
+  $lc_modsr = $prcval;
+  $lc_shel = $_[0];
   $lc_res = system($lc_shel);
   if ( $lc_res < 0.5 ) { return; }
   @lc_moda = split(quotemeta('/'),$lc_modsr);
