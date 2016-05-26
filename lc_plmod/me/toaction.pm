@@ -3,6 +3,7 @@ use wraprg;
 use me::modus;
 use me::var_lit;
 use me::brancha;
+use me::systo;
 use strict;
 
 
@@ -66,6 +67,8 @@ sub aline {
     system($lc_segcon);
     return;
   }
+  # Or, for persistent shell-commands:
+  if ( $lc_segtyp eq 'prcsh' ) { &me::systo::do_prcsh($lc_segcon); return; }
   
   # Now a directive to concisely commit all changes:
   if ( $lc_segtyp eq 'commit' )
