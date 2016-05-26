@@ -58,7 +58,7 @@ sub do_prc_pull {
       {
         foreach $lc_e_rm (@lc_remos)
         {
-          &me::systo::do_prcsh($_[1] . ':git pull ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
+          &me::systo::do_prcsh('git pull ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
         }
       }
     }
