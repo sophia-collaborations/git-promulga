@@ -57,6 +57,13 @@ sub aline {
     return;
   }
   
+  # Now a directive to concisely commit all changes:
+  if ( $lc_segtyp eq 'commit' )
+  {
+    system("git add --all");
+    system("git commit");
+  }
+  
 }
 
 
