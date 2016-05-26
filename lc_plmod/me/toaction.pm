@@ -71,6 +71,7 @@ sub aline {
     system("git reset");
     system("git add --all");
     system("git commit");
+    system("git reset");
     return;
   }
   
