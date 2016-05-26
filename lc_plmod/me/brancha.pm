@@ -1,5 +1,6 @@
 package me::brancha;
 use me::modus;
+use me::systo;
 use wraprg;
 use strict;
 
@@ -32,6 +33,17 @@ sub do_merge {
 }
 
 sub do_pull {
+  &meta_pull($_[0],'x-');
+}
+
+sub do_prc_pull {
+  my $lc_a;
+  my $lc_b;
+  ($lc_a,$lc_b) = split(/:/,$_[0],2);
+  &meta_pull($lc_b,$lc_a);
+}
+
+sub meta_pull {
   my @lc_list;
   my @lc_remos;
   my $lc_e_br_a;
@@ -49,7 +61,7 @@ sub do_pull {
       {
         foreach $lc_e_rm (@lc_remos)
         {
-          system('git pull ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
+          &me::systo::do_prcsh($_[1] . ':git pull ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
         }
       }
     }
@@ -57,6 +69,17 @@ sub do_pull {
 }
 
 sub do_push {
+  &meta_push($_[0],'x-');
+}
+
+sub do_prc_push {
+  my $lc_a;
+  my $lc_b;
+  ($lc_a,$lc_b) = split(/:/,$_[0],2);
+  &meta_push($lc_b,$lc_a);
+}
+
+sub meta_push {
   my @lc_list;
   my @lc_remos;
   my $lc_e_br_a;
@@ -74,7 +97,7 @@ sub do_push {
       {
         foreach $lc_e_rm (@lc_remos)
         {
-          system('git push ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
+          &me::systo::do_prcsh($_[1] . ':git push ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
         }
       }
     }

@@ -141,6 +141,8 @@ git-promulga: FATAL ERROR:
   # And sync them with the remotes
   if ( $lc_segtyp eq 'pull' ) { &me::brancha::do_pull($lc_segcon); return; }
   if ( $lc_segtyp eq 'push' ) { &me::brancha::do_push($lc_segcon); return; }
+  if ( $lc_segtyp eq 'prcpull' ) { &me::brancha::do_prc_pull($lc_segcon); return; }
+  if ( $lc_segtyp eq 'prcpush' ) { &me::brancha::do_prc_push($lc_segcon); return; }
   
   # Now, a directive for when promulgation here implies
   # also some promulgation of a directory higher up in

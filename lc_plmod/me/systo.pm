@@ -15,6 +15,7 @@ sub do_prcsh {
   @lc_moda = split(quotemeta('/'),$lc_modsr);
   foreach $lc_modb (@lc_moda)
   {
+    if ( $lc_modb eq 'x-' ) { return; }
     &aswesleep($lc_modb);
     
     system("echo","TRYING AGAIN: " . $lc_shel);
