@@ -62,6 +62,19 @@ sub aline {
   {
     system("git add --all");
     system("git commit");
+    return;
+  }
+  
+  # Now, a directive for when promulgation here implies
+  # also some promulgation of a directory higher up in
+  # the tree.
+  if ( $lc_segtyp eq 'continue-upward' )
+  {
+    my $lc2_mode;
+    ($lc2_mode) = split(/:/,$lc_segcon);
+    &me::modus::set_exit(0); # Cancel the exit
+    &me::modus::rqs_set($lc2_mode); # Make the mode-request
+    return;
   }
   
 }
