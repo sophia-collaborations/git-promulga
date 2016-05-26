@@ -1,6 +1,7 @@
 package me::checkit;
 use strict;
 use me::toaction;
+use me::modus;
 
 
 sub cycle {
@@ -29,8 +30,9 @@ sub cycle {
   }
   if ( $lc_filok < 5 ) { return; }
   
+  &me::modus::set_exit(10);
   &me::toaction::go();
-  exit(0);
+  if ( &me::modus::get_exit() > 5 ) { exit(0); }
 }
 
 
