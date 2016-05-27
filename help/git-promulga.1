@@ -67,33 +67,181 @@ The default value is \(dqmode\(dq.
 There are two kinds of lines in the Directive File -
 validation lines and directive lines.
 
+The first part of each line
+(that is, everything before the first-colon)
+is known as the 'modal section'
+and it is a list of all the modes that the
+line pertains to separated by forward-slashes.
+In the case of validation lines, all items on
+this list must be the literal names of modes.
+In the case of directive lines, however,
+an item could simply be an asterik ('*')
+thereby refering collectively to all modes
+that have been thus-far validated.
+The reason why such wild-carding is not allowed
+in validation lines is because each mode, to be
+valid, must be specifically specified
+(and the default mode of \(dqmain\(dq is not
+exempt from this criterion).
+
+The second part of each line (that is, everything
+between the first colon and the second colon)
+is known as the 'activity section'.
+If it's value is \(dqvalid\(dq, that signifies
+a validation line.
+Otherwise, it contains a string specifying what
+type of directive if is.
+The different possible values of this section
+are detailed in the section of this manual-page
+labeled \(dqDirective Types\(dq.
+
+In a sense, one might be tempted to think
+of validation lines as regular directive
+lines of directive-type \(dqvalid\(dq.
+However - there are a few distinctions.
+One, of course, is that wild-carding of
+mode-names is not permitted in these lines.
+The other is that no directive line is allowed
+to apply to any specific mode (even if it's
+name is specifically listed in the modal section)
+unless a validation line has specified it first.
+
+The third section of the line is known as the 'content section'.
+It simply contains any argumentation needed for a directive.
+Since the two colons that separate the sections of the line
+all come before this section, this is the only section that
+can have colons within it.
+As a matter of fact, any colon in the content section
+(that is, any colon in the entire line other than the first two)
+may simply be no more than a literal colon - unless the
+function of the directive-type specifies otherwise.
+
+In case this is too abstract,
+let's look at a little sample.
+
 .RS 3
 main:\fIvalid\fR:
 .br
 out/in:\fIvalid\fR:
 .br
-*:\fIsh\fR:git add --all
+*:\fIcommit\fR:
 .br
-*:\fIsh\fR:git commit
+*:\fIremotes\fR:origin:
 .br
-main/in:\fIsh\fR:git pull origin master
+main/in:\fIpull\fR:master:dev:
 .br
-main/out:\fIsh\fR:git push origin master
+*:\fImerge\fR:dev:master:dev:
+.br
+main/out:\fIpush\fR:master:dev:
+.br
+main/out:\fIsh\fR:ssh myself@some.where < .promulga/to-myself.cmd
 .RE
 
 Let's look at it again - this time with line-number labels
-for reference sake:
+for reference sake (a convention that will be followed for all
+sample-files for the remainder of this manual-page).
 
 .RS 3
  \fB1\fR: main:\fIvalid\fR:
 .br
  \fB2\fR: out/in:\fIvalid\fR:
 .br
- \fB3\fR: *:\fIsh\fR:git add --all
+ \fB3\fR: *:\fIcommit\fR:
 .br
- \fB4\fR: *:\fIsh\fR:git commit
+ \fB4\fR: *:\fIremotes\fR:origin:
 .br
- \fB5\fR: main/in:\fIsh\fR:git pull origin master
+ \fB5\fR: main/in:\fIpull\fR:master:dev:
 .br
- \fB6\fR: main/out:\fIsh\fR:git push origin master
+ \fB6\fR: *:\fImerge\fR:dev:master:dev:
+.br
+ \fB7\fR: main/out:\fIpush\fR:master:dev:
+.br
+ \fB8\fR: main/out:\fIsh\fR:ssh myself@some.where < .promulga/to-myself.cmd
 .RE
+
+Okay - in this repository, \fBgit-promulga\fR recognizes
+three modes ("main" specified in line 1 and "out" and "in"
+specified in line 2).
+
+Line 3 is a directive of type "commit".
+As the mode listed is the wild-card asterik,
+it pertains to all modes that have thus-far
+been validated.
+Directives of this type do more than just "git commit".
+They also take care of all the staging and everything
+so that you don't have to worry about that.
+
+So, if \fBgit-promulga\fR is invoked with a valid mode,
+then after line 3, all changes since last time will have
+been staged and committed. However, they will be restricted
+to the local repository.
+
+Line 4 is a directive of type \(dqremotes\(dq.
+It's content section is nothing more or less than
+a colon-separated list of all the Git remotes that
+subsequent pull and push commands will pull and push from
+(at least until a later directive of this type changes it).
+For this reason, in the next line (Line 5), it is
+from the \(dqorigin\(dq remote that the \(dqmaster\(dq branch
+and then the \(dqdev\(dq branch are pulled.
+
+After Line 5, the local clone will have the \(dqdev\(dq branch
+checked out (if it exists - more on
+the limitations of this directive-type
+in it's section) because that is the last branch
+listed in this line.
+
+Line 5, of course, will be ignored if the mode that
+the program is run in is \(dqout\(dq, because the
+modal section limits it to the \(dqmain\(dq
+and \(dqin\(dq modes.
+
+Line 6 merges the two branches of the local repository
+- once again (usually) leaving the \(dqdev\(dq branch
+checked out - because it is (once again) the last
+branch mentioned.
+
+Line 7 simiarly pushes the commits of the \(dqmaster\(dq
+and \(dqdev\(dq branches (still to the \(dqorigin\(dq
+remote, because that never got changed) - unless
+\fBgit-promulga\fR is running in mode \(dqin\(dq.
+
+Finally comes Line 8, a directive of type \(dqsh\(dq
+- which means that it's content section is simply run
+as-is as a shell-command.
+This line (unless your are in mode \(dqin\(dq)
+opens a SSH connection to the account \(dqmyself\(dq
+on the server \(dqsome.where\(dq (presumably
+where the \(dqorigin\(dq branch is located).
+Instead of opening a terminal session on SSH,
+it pipes to SSH the contents of the file
+\(dq.promulga/to-myself.cmd\(dq.
+
+As noted - the source that gets piped to SSH
+is in the \(dq.promulga\(dq directory.
+This is because \fBgit-promulga\fR insists
+that the entire directory must be git-ignored,
+yet \(dqmain.dat\(dq is the only file within it
+that is of special significance to \fBgit-promulga\fR.
+That makes this directory a convenient place
+to put resource files like this.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
