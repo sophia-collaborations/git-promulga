@@ -15,6 +15,7 @@ sub go {
   my $lc_filca;
   my @lc_filcb;
   my $lc_filcc;
+  my $lc_cmdon;
   
   # We must know what mode we are on:
   $moda = &me::modus::get();
@@ -24,7 +25,8 @@ sub go {
   &me::modus::brnc_fnd();
   
   $validty = 0;
-  $lc_filca = `cat .promulga/main.dat`;
+  $lc_cmdon = "cat \"\${GIT_PROMULGA_DIR}/main.dat\"";
+  $lc_filca = `$lc_cmdon`;
   @lc_filcb = split(/\n/,$lc_filca);
   foreach $lc_filcc ( @lc_filcb ) { &aline($lc_filcc); }
 }

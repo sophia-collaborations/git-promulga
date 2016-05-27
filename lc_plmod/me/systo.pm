@@ -1,4 +1,5 @@
 package me::systo;
+use wraprg;
 use strict;
 
 my $prcval;
@@ -36,6 +37,22 @@ sub do_prcsh {
 sub aswesleep {
   system("echo","Awaiting Retry: " . $_[0]);
   sleep($_[0]);
+}
+
+sub cnfread {
+  my $lc_cm;
+  my $lc_rs;
+  $lc_cm = 'git config --local --get ';
+  $lc_cm .= &wraprg::bsc($_[0]);
+  $lc_rs = `$lc_cm`; chomp($lc_rs);
+  if ( $lc_rs eq '' ) { $lc_rs = $_[1]; }
+  return $lc_rs;
+}
+
+sub cnfwrite {
+  my $lc_cm;
+  $lc_cm = 'git config --local ' . &wraprg::bsc($_[0]) . ' ' . &wraprg::bsc($_[1]);
+  system($lc_cm);
 }
 
 

@@ -2,6 +2,7 @@ package me::checkit;
 use strict;
 use me::toaction;
 use me::modus;
+use me::systo;
 
 
 sub cycle {
@@ -13,6 +14,7 @@ sub cycle {
   my @lc_filcb;
   my $lc_filcc;
   my $lc_filok;
+  my $lc_awinner;
   
   # The following variables will only be used
   # in the event that a 'continue-upward' directive
@@ -25,30 +27,83 @@ sub cycle {
   # Currently, the only check we have in place
   # for whether or not this is a Git-project
   # head-directory is this:
+  #   THIS CRITERION APPLIES TO BOTH MODES OF
+  # SELECTING THE CONFIGURATION DIRECTORY.
   if ( !(-d '.git') ) { return; }
   
-  # The main promulga file must be present for
-  # this to be a promulga-eligible directory.
-  if ( !(-f '.promulga/main.dat') ) { return; }
+  $lc_awinner = 0;
   
-  # Now for the heavy checks -- the promulga
-  # directory must be registered in the git ignore
-  # file.
-  $lc_filca = `cat .gitignore`;
-  @lc_filcb = split(/\n/,$lc_filca);
-  $lc_filok = 0;
-  foreach $lc_filcc (@lc_filcb)
+  
+  # NOW FOR THE NEWER MODE OF CONFIGURATION-LOCATION:
+  if ( $lc_awinner < 5 )
   {
-    if ( $lc_filcc eq '/.promulga' ) { $lc_filok = 10; }
+    $lc_awinner = 10;
+    
+    my $lc2_loc;
+    my $lc2_lcf;
+    $lc2_loc = &me::systo::cnfread('promulga.dir','x');
+    if ( $lc2_loc eq 'x' ) { $lc_awinner = 0; }
+    
+    if ( $lc_awinner > 5 )
+    {
+      $lc2_lcf = ( $lc2_loc . '/main.dat' );
+      if ( ! ( -f $lc2_lcf ) ) { $lc_awinner = 0; }
+    }
+    
+    # No need to check for registration in .gitignore because
+    # this directory is most-likely outside the repository.
+    
+    if ( $lc_awinner > 5 )
+    {
+      $ENV{'GIT_PROMULGA_DIR'} = $lc2_loc;
+    }
   }
-  if ( $lc_filok < 5 ) { return; }
   
-  # Now we will set the value for GIT_PROMULGA_DIR
+  
+  # NOW FOR THE OLD-FASHIONED MODE OF CONFIGURATION:
+  if ( $lc_awinner < 5 )
+  {
+    $lc_awinner = 10;
+    
+    # The main promulga file must be present for
+    # this to be a promulga-eligible directory.
+    if ( !(-f '.promulga/main.dat') ) { $lc_awinner = 0; }
+    
+    # Now for the heavy checks -- the promulga
+    # directory must be registered in the git ignore
+    # file.
+    if ( $lc_awinner > 5 )
+    {
+      $lc_filca = `cat .gitignore`;
+      @lc_filcb = split(/\n/,$lc_filca);
+      $lc_filok = 0;
+      foreach $lc_filcc (@lc_filcb)
+      {
+        if ( $lc_filcc eq '/.promulga' ) { $lc_filok = 10; }
+      }
+      if ( $lc_filok < 5 ) { return; }
+    }
+    
+    if ( $lc_awinner > 5 )
+    {
+      # Now we will set the value for GIT_PROMULGA_DIR
+      {
+        my $lc2_a;
+        $lc2_a = `pwd`; chomp($lc2_a);
+        $lc2_a .= '/.promulga';
+        $ENV{'GIT_PROMULGA_DIR'} = $lc2_a;
+      }
+    }
+  }
+  
+  # IF NO MODE SUCCEEDS, WE FAIL.
+  if ( $lc_awinner < 5 ) { return; }
+  
+  # Now for the unique identifier:
   {
     my $lc2_a;
-    $lc2_a = `pwd`; chomp($lc2_a);
-    $lc2_a .= '/.promulga';
-    $ENV{'GIT_PROMULGA_DIR'} = $lc2_a;
+    $lc2_a = &me::systo::cnfread('promulga.repoid','solo');
+    $ENV{'GIT_PROMULGA_RPID'} = $lc2_a;
   }
   
   &me::modus::set_exit(10);
