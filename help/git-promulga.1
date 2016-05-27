@@ -371,6 +371,25 @@ by a "prcsh" directive - meaning that if the shell command
 returns an error, it will be called over and over with
 such persistence in hopes that it returns without error
 before the persistence line runs out.
+
+There is, of course, one more limitation to persistence
+for the time being
+(which hopefully will be resolved in later versions,
+but should be mentioned while it is present).
+The success of the "git push" and "git pull" operations
+are determined by whether or not the shell-commands
+to "git pull" and "git push" return with error or
+without error.
+Unfortunately, this is not a completely reliable
+method as it has been observed that unexpected
+hangups from the remote failed to result in
+an error-return of the shell command -- thus
+preventing persistence from kicking in, and
+causing \fBgit-promulga\fR to go on about it's
+merry way as though nothing had gone wrong.
+Hopefully, a better test for success will be
+coded into later version -- but until then,
+user beware.
 .SH DIRECTIVE TYPES
 .SH ENVIRONMENT VARIABLES
 The following environment variables are set by \fBgit-promulga\fR
