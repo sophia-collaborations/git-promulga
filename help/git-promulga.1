@@ -1,4 +1,5 @@
 .TH GIT-PROMULGA 1
+.nh
 .SH NAME
 git-promulga - A nutbag system for advanced synchronization operations in Git.
 .SH SYNOPSIS
@@ -18,27 +19,36 @@ and moving on up)
 until it finds a containing directory
 that contains within it a sub-directory named \(dqgit\(dq
 (which is the sign it checks for presence in a Git
-directory) as well as the file \(dq.promulga/main.dat\(dq
-(who's presence automatically implies the existence of
-the \(dq.promulga\(dq sub-direrectory.
+directory).
 
-The last criterion \fBgit-promulga\fR looks for is
-that the \(dq.gitignore\(dq file has the line \(dq/.promulga\(dq.
-It checks for this because the contents of the
-\(dq.promulga\(dq directory are specific
-to individual clones of the repository.
-For this reason, if it does not find that line
-in the \(dq.gitignore\(dq file, the current directory
-will fail the test for promulgation eligibility,
+Once it meets this rudimentary satisfaction that it is
+in the head directory of a Git repository, it then
+tries to see if this repository has an
+appropriate \fBgit-promulga\fR configuration directory.
+There are two ways that this criterion can be satisfied -
+with an internal configuration directory or an external one.
+It checks first for an external configuration directory
+(which is the encouraged way of doing things) and if
+that fails, then checks for an internal configuration directory
+(which was the way in the eariest stages of the program's
+development, but is now considered a relic and subject
+to possible deprecation in the future). If neither
+type of configuration directory is found, then
+it concludes that this is not a \fBgit-promulga\fR
+eligible directory,
 and the search will continue to the next
 directory up the tree.
+
+More on these tests in the section of this manual-page
+labeled "The Configuration Directory".
 
 So in short - \fBgit-promulga\fR is looking for
 the head directory of a git project who's local clone
 is configured for \fBgit-promulga\fR.
 When it finds that directory,
-it loads the contents of the \(dq.promulga/main.dat\(dq
-file (known as the \(dqdirective file\(dq), and carries out every
+it loads the contents of the \(dqmain.dat\(dq
+file inside the configuration
+directory (known as the \(dqdirective file\(dq), and carries out every
 directive in that
 file that is applicable to the mode that it is
 being run in (which is \(dqmain\(dq by default, but can
@@ -47,6 +57,60 @@ in the section of this manual page labeled \(dqOptions\(dq).
 
 For more information on the structure of the directive file, see
 the section of this manual-page labeled \(dqThe Directive File\(dq.
+.SH THE CONFIGURATION DIRECTORY
+For a directory to be deemed a suitable home-base for
+\fBgit-promulga\fR, it is not enough for it to be the
+head directory of a Git repository (though that is
+requried too). The repository must also have a
+configuration directory to define the local specifics
+of how \fBgit-promulga\fR functions.
+
+Upon concluding that it is in-fact in the head directory
+of a Git repository,
+\fBgit-promulga\fR first checks for an external configuration
+directory - that is, a configuration directory that is
+(presumably, at least) located outside of the repository
+itself.
+
+The first thing it does to find an external configuration
+directory is read the local Git configuration variable
+\(dqpromulga.dir\(dq.
+If that configuration variable is absent from the
+repository's local config - or if it has a value of \(dqx\(dq,
+then the test fails.
+Otherwise, it checks to see if the file \(dqmain.dat\(dq
+exists in the directory named by that variable
+(which if it does, implicitly means that the directory itself
+does in fact exist).
+If that file is found, then the named directory is
+identified as the configuration directory - the test is
+passed - and no check will be made for an internal configuration directory.
+
+If, however, the test for an external configuration directory fails,
+then \fBgit-promulga\fR will check (at least for the time being)
+for an internal configuration directory.
+This is not the preferred way of doing things, and is only
+suppoorted at all for the legacy of the earliest stages
+of this program's development.
+As a matter of fact, support for internal configuration directories
+may even be deprecated in the future.
+
+The first thing that \fBgit-promulga\fR does in checking for
+an internal configuration directory is that the file
+\(dq.promulga/main.dat\(dq exists.
+That is the first criterion for an internal configuration directory.
+However (unlike an external directory which is, at least presumably,
+outside of the repository itself) another measure need to be taken
+to assure that the contents of the configuration directory
+do not get exchanged between the various clones of a project.
+For this reason, \fBgit-promulga\fR will at this point scan
+the \(dq.gitignore\(dq
+file to see if it has a line who's contents are \(dq/.promulga\(dq.
+If it finds that line, then \(dq.promulga\(dq within the head directory
+of the Git repository is identified
+as the configuration directory.
+However, if either of these criteria is not met,
+then the test for an internal configuration directory also fails.
 .SH OPTIONS
 The options are processed in the order that they appear on the command line.
 Each option overrides any earlier option to it's contrary.
@@ -228,15 +292,6 @@ Instead of opening a terminal session on SSH,
 it pipes to SSH the contents of the file
 \(dqto-myself.cmd\(dq inside of the
 \fBgit-promulga\fR configuration directory.
-This file one might simply reference as \(dq.promulga/to-myself.cmd\(dq,
-since all these shell commands are executed from the head
-directory of the Git repository.
-However, since in the not-too-distant future,
-there will be alternate possible locations for the
-configuration directory, it is better to reference
-it through the \fBGIT_PROMULGA_DIR\fR environment
-variable rather than by it's
-literal name of \(dq.promulga\(dq.
 
 As noted - the source that gets piped to SSH
 is in the \(dq.promulga\(dq directory.
@@ -283,6 +338,7 @@ such directive-types.
  \fB9\fR: main/out:\fIprcsh\fR:ssh myself@some.where
 .br
  \fB9\fR(cont):    < \(dq${GIT_PROMULGA_DIR}/to-myself.cmd\(dq
+.RE
 
 A new Line 4 is added (causing the old Lines 4 thru 8 to now
 become Lines 5 thru 9).
@@ -315,8 +371,30 @@ by a "prcsh" directive - meaning that if the shell command
 returns an error, it will be called over and over with
 such persistence in hopes that it returns without error
 before the persistence line runs out.
+.SH DIRECTIVE TYPES
+.SH ENVIRONMENT VARIABLES
+The following environment variables are set by \fBgit-promulga\fR
+and as such can be used by shell commands.
+.TP
+.BR \fBGIT_PROMULGA_DIR\fR
+The location of the configuration directory. See the section
+of this manual-page labeled "The Configuration Directory"
+to find out how this value is determined.
+.TP
+.BR \fBGIT_PROMULGA_RPID\fR
+The value of the local Git config variable \(dqpromulga.repoid\(dq.
+If this config variable is absent from the local repository,
+then it defaults to the value \(dqsolo\(dq.
 
-
+The reason for this environment variable is that, in the event
+that multiple repositories share a common configuration directory
+(which at times may be expedient so as to avoid redundancies)
+there might still be a need to uniquely identify the repository
+it is presently being used from.
+For that reason, if multiple repositories do indeed share
+the same configuration directory, it is important to make
+sure that they all have the \(dqpromulga.repoid\(dq variable
+set, and that each one has it set to it's unique value.
 
 
 
