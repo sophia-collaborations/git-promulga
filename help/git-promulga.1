@@ -226,7 +226,73 @@ that is of special significance to \fBgit-promulga\fR.
 That makes this directory a convenient place
 to put resource files like this.
 
+But before we end this section of the documentation there is
+one more thing to discuss.
+Everything we did so far is fine if the
+server we are working with grants access absolutely 100% of the
+time and the internet connection to it is equally reliable.
+Unfortunately, we all know that this is a dubious
+proposition.
+For this reason, we have directive-types that use a feature
+called 'persistence'.
+That means that if certain actions do not work the first
+time, they try again.
 
+Here is a version of the sample "main.dat" above,
+only modified so that it uses
+such directive-types.
+
+.RS 3
+ \fB1\fR: main:\fIvalid\fR:
+.br
+ \fB2\fR: out/in:\fIvalid\fR:
+.br
+ \fB3\fR: *:\fIcommit\fR:
+.br
+ \fB4\fR: *:\fIprcset\fR:5/10/15/20/25/30/35/40/45/50/55/60:
+.br
+ \fB5\fR: *:\fIremotes\fR:origin:
+.br
+ \fB6\fR: main/in:\fIprcpull\fR:master:dev:
+.br
+ \fB7\fR: *:\fImerge\fR:dev:master:dev:
+.br
+ \fB8\fR: main/out:\fIprcpush\fR:master:dev:
+.br
+ \fB9\fR: main/out:\fIprcsh\fR:ssh myself@some.where < .promulga/to-myself.cmd
+.RE
+
+A new Line 4 is added (causing the old Lines 4 thru 8 to now
+become Lines 5 thru 9).
+This new Line 4 is of directive-type "prcset".
+It sets the persistence schedule - which is a list
+of numbers separated by forward-slashes.
+As a result of Line 4, henceforth,
+if a persistent operation fails, it will be attempted again
+5 seconds afterwards.
+If again it fails, it will wait another 10 seconds and try again --
+then, upon another failure, 15 seconds - and so forth.
+Hopefully, the operation will succeed before it reaches the end
+of the list.
+But if at the end (if it fails after the final wait - which is 60-seconds)
+then it will give up and move on.
+
+A few of the later directives have been modified to use this
+persistence.
+For example, the "pull" directives have been replaced
+with "prcpull" directives.
+The only difference is that the "git pull" command
+invoked for every remote-branch combination will be called
+with this persistence.
+And to do the same for "git push" commands invoked,
+the "push" directives have been replaced by "prcpush"
+directives.
+
+Last but not least - the "sh" directive has been replaced
+by a "prcsh" directive - meaning that if the shell command
+returns an error, it will be called over and over with
+such persistence in hopes that it returns without error
+before the persistence line runs out.
 
 
 
