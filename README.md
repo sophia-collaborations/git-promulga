@@ -23,9 +23,11 @@ the following litany:
       sh install.sh
     ) )
 
-Once you have done all this, if you wish to read the documentation
-(that is, once the documentation is complete - and this readme
-will be changed to reflact that once it is)
+Documentation is not complete - but it is far enough along
+that you should be able to use it to do a reasonable amount
+of useful stuff with __git-promulga__.
+
+Once you have installed __git-promulga__, if you wish to read the documentation
 type the following command:
 
     git-promulga --help
