@@ -54,12 +54,13 @@ sub do_prc_pull {
     if ( $lc_e_br_r ne '' )
     {
       system('git checkout ' . &wraprg::bsc($lc_e_br_r) . ' --');
-      if ( $lc_e_br_r eq &me::modus::brnc_id() )
+      if ( $lc_e_br_r ne &me::modus::brnc_id() )
       {
-        foreach $lc_e_rm (@lc_remos)
-        {
-          &me::systo::do_prcsh('git pull ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
-        }
+        system('git checkout --orphan ' . &wraprg::bsc($lc_e_br_r));
+      }
+      foreach $lc_e_rm (@lc_remos)
+      {
+        &me::systo::do_prcsh('git pull ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
       }
     }
   }
