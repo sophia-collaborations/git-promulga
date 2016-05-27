@@ -134,7 +134,9 @@ main/in:\fIpull\fR:master:dev:
 .br
 main/out:\fIpush\fR:master:dev:
 .br
-main/out:\fIsh\fR:ssh myself@some.where < .promulga/to-myself.cmd
+main/out:\fIsh\fR:ssh myself@some.where
+.br
+      < \(dq${GIT_PROMULGA_DIR}/to-myself.cmd\(dq
 .RE
 
 Let's look at it again - this time with line-number labels
@@ -156,8 +158,17 @@ sample-files for the remainder of this manual-page).
 .br
  \fB7\fR: main/out:\fIpush\fR:master:dev:
 .br
- \fB8\fR: main/out:\fIsh\fR:ssh myself@some.where < .promulga/to-myself.cmd
+ \fB8\fR: main/out:\fIsh\fR:ssh myself@some.where
+.br
+ \fB8\fR(cont):    < \(dq${GIT_PROMULGA_DIR}/to-myself.cmd\(dq
 .RE
+
+In addition to the fact that we now have line-numbers
+by which to reference the lines in the description,
+it is now also clear that Line 8 (though divided into
+two lines in this manual-page for the sake of typesetting)
+must, in fact, be a single line in the actual file
+being described.
 
 Okay - in this repository, \fBgit-promulga\fR recognizes
 three modes ("main" specified in line 1 and "out" and "in"
@@ -215,7 +226,17 @@ on the server \(dqsome.where\(dq (presumably
 where the \(dqorigin\(dq branch is located).
 Instead of opening a terminal session on SSH,
 it pipes to SSH the contents of the file
-\(dq.promulga/to-myself.cmd\(dq.
+\(dqto-myself.cmd\(dq inside of the
+\fBgit-promulga\fR configuration directory.
+This file one might simply reference as \(dq.promulga/to-myself.cmd\(dq,
+since all these shell commands are executed from the head
+directory of the Git repository.
+However, since in the not-too-distant future,
+there will be alternate possible locations for the
+configuration directory, it is better to reference
+it through the \fBGIT_PROMULGA_DIR\fR environment
+variable rather than by it's
+literal name of \(dq.promulga\(dq.
 
 As noted - the source that gets piped to SSH
 is in the \(dq.promulga\(dq directory.
@@ -259,8 +280,9 @@ such directive-types.
 .br
  \fB8\fR: main/out:\fIprcpush\fR:master:dev:
 .br
- \fB9\fR: main/out:\fIprcsh\fR:ssh myself@some.where < .promulga/to-myself.cmd
-.RE
+ \fB9\fR: main/out:\fIprcsh\fR:ssh myself@some.where
+.br
+ \fB9\fR(cont):    < \(dq${GIT_PROMULGA_DIR}/to-myself.cmd\(dq
 
 A new Line 4 is added (causing the old Lines 4 thru 8 to now
 become Lines 5 thru 9).

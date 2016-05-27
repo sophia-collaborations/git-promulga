@@ -43,6 +43,14 @@ sub cycle {
   }
   if ( $lc_filok < 5 ) { return; }
   
+  # Now we will set the value for GIT_PROMULGA_DIR
+  {
+    my $lc2_a;
+    $lc2_a = `pwd`; chomp($lc2_a);
+    $lc2_a .= '/.promulga';
+    $ENV{'GIT_PROMULGA_DIR'} = $lc2_a;
+  }
+  
   &me::modus::set_exit(10);
   &me::toaction::go();
   if ( &me::modus::get_exit() > 5 ) { exit(0); }
