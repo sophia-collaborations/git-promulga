@@ -29,6 +29,20 @@ sub go {
   foreach $lc_filcc ( @lc_filcb ) { &aline($lc_filcc); }
 }
 
+sub anti {
+  my $lc_src;
+  my $lc_pre;
+  my $lc_rest;
+  $lc_src = $_[0];
+  $lc_pre = substr $lc_src, 0, 1;
+  if ( $lc_pre eq '-' )
+  {
+    $lc_rest = substr $lc_src, 1;
+    if ( $lc_rest eq $_[1] ) { return ( 2 > 1 ); }
+  }
+  return ( 1 > 2 );
+}
+
 sub aline {
   my $lc_segnom;
   my $lc_segtyp;
@@ -37,6 +51,7 @@ sub aline {
   my $lc_nomech;
   my $lc_ok; # 0 = no match ; 5 = wildcard only ; 10 = match
   ($lc_segnom,$lc_segtyp,$lc_segcon) = split(quotemeta(':'),$_[0],3);
+  if ( $lc_segtyp eq '' ) { return; } # No time wasted on comments.
   @lc_nomlis = split(quotemeta('/'),$lc_segnom);
   $lc_ok = 0;
   
@@ -45,6 +60,7 @@ sub aline {
   foreach $lc_nomech (@lc_nomlis)
   {
     if ( $lc_nomech eq '*' ) { if ( $lc_ok < 5 ) { $lc_ok = 5; } }
+    if ( &anti($lc_nomech,$moda) ) { $lc_ok = 0; }
     if ( $lc_nomech eq $moda ) { $lc_ok = 10; }
   }
   if ( $lc_ok < 3 ) { return; }
