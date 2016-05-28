@@ -391,16 +391,85 @@ Hopefully, a better test for success will be
 coded into later version -- but until then,
 user beware.
 .SH DIRECTIVE TYPES
+.TP
+.BR \fBbranch\fR
+.br
+A directive of this type simply has the function of
+using a \(dqgit checkout\(dq command to change
+branch.
+It's content section is a colon-separated list
+who's first item is the name of a branch.
+It's first item is a branch-identifier
+(which means that it is either literally the name of
+a branch or an asterik to indicate the
+branch that this repository had checked out at
+the time that \fBgit-promulga\fR was invoked).
+The program attempts to check out the branch
+identified in this identifier.
+
+The rest of the items on the list are a series
+of actions to be taken if the initial checkout
+fails until one of the backup actions succeeds
+(or until the list reaches it's end). These
+options are as follows:
+
+.RS 8
+\fBdie\fR
+.RS 3
+This option, if reached, causes a fatal-error
+for \fBgit-promulga\fR.
+.RE
+
+\fbfrc\fR
+.RS 3
+This option attempts to do the checkout with the
+\fB-b\fR option. (See \fBgit-checkout\fR for details.)
+.RE
+.RE
+.TP
+.BR \fBcommit\fR
+.br
+A directive of this type does a commit -- including
+the automatic staging of all changes
+that aren't blocked by gitignore.
+If, for some reason you choose not
+to do the commit (by not including the
+required line of the change-logue)
+then all staging will be reset afterwards.
+.TP
+.BR \fBprcset\fR
+.br
+Sets the list of second-intervals to wait
+between attempts if a persistent directive
+fails on it's earlier attempts.
+Everything between the second and third column on
+this line (that is, the entire content section prior
+to it's first colon) is a list of numbers separated by
+forward-slashes -- each of which indicates
+the number of seconds to wait before a retry.
+.TP
+.BR \fBprcsh\fR
+.br
+Just like the \fBsh\fR directive, except for that
+it uses the persistence feature.
+.TP
+.BR \fBsh\fR
+.br
+A directive of this type simply runs the entire
+content section of the directive line as-is as
+a shell command.
 .SH ENVIRONMENT VARIABLES
 The following environment variables are set by \fBgit-promulga\fR
 and as such can be used by shell commands.
 .TP
 .BR \fBGIT_PROMULGA_DIR\fR
+.br
 The location of the configuration directory. See the section
 of this manual-page labeled "The Configuration Directory"
 to find out how this value is determined.
 .TP
 .BR \fBGIT_PROMULGA_RPID\fR
+.br
 The value of the local Git config variable \(dqpromulga.repoid\(dq.
 If this config variable is absent from the local repository,
 then it defaults to the value \(dqsolo\(dq.
@@ -414,19 +483,3 @@ For that reason, if multiple repositories do indeed share
 the same configuration directory, it is important to make
 sure that they all have the \(dqpromulga.repoid\(dq variable
 set, and that each one has it set to it's unique value.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
