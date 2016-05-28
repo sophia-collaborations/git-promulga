@@ -1,4 +1,5 @@
 package me::systo;
+use Cwd;
 use wraprg;
 use strict;
 
@@ -37,6 +38,13 @@ sub do_prcsh {
 sub aswesleep {
   system("echo","Awaiting Retry: " . $_[0]);
   sleep($_[0]);
+}
+
+sub realpath {
+  my $lc_a;
+  $lc_a = &Cwd::abs_path($_[0]);
+  if ( $lc_a eq '' ) { return $_[0]; }
+  return $lc_a;
 }
 
 sub cnfread {
