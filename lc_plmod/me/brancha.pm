@@ -22,11 +22,12 @@ sub do_merge {
     {
       if ( $lc_act ne '' )
       {
-        if ( $lc_act eq &me::modus::brnc_id() )
+        if ( $lc_act ne &me::modus::brnc_id() )
         {
-          system('git merge ' . &wraprg::bsc($lc_last));
-          $lc_last = $lc_act;
+          system('git checkout --orphan ' . &wraprg::bsc($lc_act));
         }
+        system('git merge ' . &wraprg::bsc($lc_last));
+        $lc_last = $lc_act;
       }
     }
   }

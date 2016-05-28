@@ -139,7 +139,7 @@ line pertains to separated by forward-slashes.
 In the case of validation lines, all items on
 this list must be the literal names of modes.
 In the case of directive lines, however,
-an item could simply be an asterik ('*')
+an item could simply be an asterisk ('*')
 thereby refering collectively to all modes
 that have been thus-far validated.
 The reason why such wild-carding is not allowed
@@ -239,7 +239,7 @@ three modes ("main" specified in line 1 and "out" and "in"
 specified in line 2).
 
 Line 3 is a directive of type "commit".
-As the mode listed is the wild-card asterik,
+As the mode listed is the wild-card asterisk,
 it pertains to all modes that have thus-far
 been validated.
 Directives of this type do more than just "git commit".
@@ -391,6 +391,13 @@ Hopefully, a better test for success will be
 coded into later version -- but until then,
 user beware.
 .SH DIRECTIVE TYPES
+This section is still a work-in-progress, so
+not all the directive-types are listed yet.
+However, combined with the examples provided in
+the previous section,
+this section will provide enough information
+on the directive types to allow you to unleash
+the full power of the current version of \fBgit-promulga\fR.
 .TP
 .BR \fBbranch\fR
 .br
@@ -401,7 +408,7 @@ It's content section is a colon-separated list
 who's first item is the name of a branch.
 It's first item is a branch-identifier
 (which means that it is either literally the name of
-a branch or an asterik to indicate the
+a branch or an asterisk to indicate the
 branch that this repository had checked out at
 the time that \fBgit-promulga\fR was invoked).
 The program attempts to check out the branch
@@ -437,6 +444,42 @@ to do the commit (by not including the
 required line of the change-logue)
 then all staging will be reset afterwards.
 .TP
+.BR \fBcontinue-upward\fR
+.br
+Normally, after finding a suitably-configured
+Git directory and processing it's directives,
+\fBgit-promulga\fR exits.
+However, this directive cancels that exit,
+causing \fBgit-promulga\fR (after finishing to
+process this directory) to keep searching higher
+up the tree for yet another properly-configured
+directory to process.
+
+Everything in the content section of this directive
+prior to the first colon
+(that is, everything between the second and third
+colons of the entire directive line)
+is the name of a mode (yes - the same kind
+of mode that in the command-line is at the mercy
+of the \fB-md\fR option) - and it identifies the
+mode that \fBgit-promulga\fR will switch to after
+finishing to process this directory before continuing
+it's search upward. If a simple asterisk is present
+instead of a proper mode-name, that simply means
+that the mode will be unchanged.
+.TP
+.BR \fBmerge\fR
+.br
+The content section here is a colon-separated list of
+branch-identifiers (already explained what that means).
+Starting with the second branch on the list,
+each branch has the previous branch on the list merged
+into it.
+
+At the end of this directive's operation, the last
+branch on this list is the one checked out in the local
+repository.
+.TP
 .BR \fBprcset\fR
 .br
 Sets the list of second-intervals to wait
@@ -452,6 +495,14 @@ the number of seconds to wait before a retry.
 .br
 Just like the \fBsh\fR directive, except for that
 it uses the persistence feature.
+.TP
+.BR \fBremotes\fR
+.br
+The content section of a directive of this type is
+a colon-separated list of remotes.
+From now until the next \(dqremotes\(dq directive,
+the remotes on the list will be the ones accessed
+through every pull and push operation.
 .TP
 .BR \fBsh\fR
 .br
