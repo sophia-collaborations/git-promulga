@@ -1,5 +1,6 @@
 package me::checkit;
 use strict;
+use chobak_warnerr;
 use me::toaction;
 use me::modus;
 use me::systo;
@@ -15,6 +16,7 @@ sub cycle {
   my $lc_filcc;
   my $lc_filok;
   my $lc_awinner;
+  my $lc_pwad;
   
   # The following variables will only be used
   # in the event that a 'continue-upward' directive
@@ -93,6 +95,31 @@ sub cycle {
         $lc2_a .= '/.promulga';
         $ENV{'GIT_PROMULGA_DIR'} = $lc2_a;
       }
+      $lc_pwad = `pwd`; chomp($lc_pwad);
+      &chobak_warnerr::prima_one(
+        "\ngit-promulga: DEPRECATION WARNING:\n" .
+          "    DIRECTORY: " . $lc_pwad . ":\n" .
+          "The use of internal configuration files in git-promulga has been\n" .
+          "deprecated and support for it will be discontinued at High Noon\n" .
+          "on July 4, 2017. Until that time, this warning will be accompanied\n" .
+          "by a pause of gradually increasing duration as to make sure that\n" .
+          "developers see the warning so that they can heed it.\n" .
+          "  Move the configuration directory to a place in your filesystem\n" .
+          "that is outside of your repository - and then use the '-cnf' option\n" .
+          "of 'git-promulga' to set it as your external configuration directory.\n" .
+        "\n",
+        "\ngit-promulga: FATAL ERROR:\n" .
+          "    DIRECTORY: " . $lc_pwad . ":\n" .
+          "The use of internal configuration files in git-promulga has been\n" .
+          "deprecated and support for it has been discontinued\n" .
+          "  Move the configuration directory to a place in your filesystem\n" .
+          "that is outside of your repository - and then use the '-cnf' option\n" .
+          "of 'git-promulga' to set it as your external configuration directory.\n" .
+        "\n",
+        '2016-07-04--12-00-00',
+        25,
+        '2017-07-04--12-00-00'
+      );
     }
   }
   

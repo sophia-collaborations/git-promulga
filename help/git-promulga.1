@@ -31,8 +31,9 @@ It checks first for an external configuration directory
 (which is the encouraged way of doing things) and if
 that fails, then checks for an internal configuration directory
 (which was the way in the eariest stages of the program's
-development, but is now considered a relic and subject
-to possible deprecation in the future). If neither
+development, but has now been deprecated, and is only
+supported as a legacy feature until noon of July 4, 2017).
+If neither
 type of configuration directory is found, then
 it concludes that this is not a \fBgit-promulga\fR
 eligible directory,
@@ -92,8 +93,11 @@ for an internal configuration directory.
 This is not the preferred way of doing things, and is only
 suppoorted at all for the legacy of the earliest stages
 of this program's development.
-As a matter of fact, support for internal configuration directories
-may even be deprecated in the future.
+As a matter of fact, in the future, that will be the
+only way to do things - because support for internal
+configuration directories
+has been deprecated and legacy support will be discontinued
+at noon on July 4, 2017.
 
 The first thing that \fBgit-promulga\fR does in checking for
 an internal configuration directory is that the file
