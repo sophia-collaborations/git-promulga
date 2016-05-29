@@ -99,7 +99,7 @@ sub cycle {
       &chobak_warnerr::prima_one(
         "\ngit-promulga: DEPRECATION WARNING:\n" .
           "    DIRECTORY: " . $lc_pwad . ":\n" .
-          "The use of internal configuration files in git-promulga has been\n" .
+          "The use of internal configuration directories in git-promulga has been\n" .
           "deprecated and support for it will be discontinued at High Noon\n" .
           "on July 4, 2017. Until that time, this warning will be accompanied\n" .
           "by a pause of gradually increasing duration as to make sure that\n" .
@@ -110,7 +110,7 @@ sub cycle {
         "\n",
         "\ngit-promulga: FATAL ERROR:\n" .
           "    DIRECTORY: " . $lc_pwad . ":\n" .
-          "The use of internal configuration files in git-promulga has been\n" .
+          "The use of internal configuration directories in git-promulga has been\n" .
           "deprecated and support for it has been discontinued\n" .
           "  Move the configuration directory to a place in your filesystem\n" .
           "that is outside of your repository - and then use the '-cnf' option\n" .
