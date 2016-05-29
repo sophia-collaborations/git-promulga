@@ -16,6 +16,7 @@ sub go {
   my @lc_filcb;
   my $lc_filcc;
   my $lc_cmdon;
+  my $lc_locato;
   
   # We must know what mode we are on:
   $moda = &me::modus::get();
@@ -29,6 +30,15 @@ sub go {
   $lc_filca = `$lc_cmdon`;
   @lc_filcb = split(/\n/,$lc_filca);
   foreach $lc_filcc ( @lc_filcb ) { &aline($lc_filcc); }
+  
+  if ( $validty < 5 )
+  {
+    $lc_locato = `pwd`; chomp($lc_locato);
+    die ( &me::modus::alr_out() . "\ngit-promulga: FATAL ERROR:\n" .
+      "DIRECTORY: " . $lc_locato . ":\n" .
+      "    No such mode supported: " . $moda . ":\n" .
+    "\n");
+  }
 }
 
 sub anti {
