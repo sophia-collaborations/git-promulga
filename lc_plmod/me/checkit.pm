@@ -117,7 +117,7 @@ sub cycle {
           "of 'git-promulga' to set it as your external configuration directory.\n" .
         "\n",
         '2016-07-04--12-00-00',
-        25,
+        20,
         '2017-07-04--12-00-00'
       );
     }
