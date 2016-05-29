@@ -37,8 +37,8 @@ sub opto__cnf_do {
   if ( ! ( -f $lc_cfile ) )
   {
     die "\ngit-promulga: FATAL ERROR:\n" .
-      "  Bad config directory:\n      " . $lc_cfile . ":\n" .
-      "  It does not contain the obligatory \"main.dat\" file.\n";
+      "  Bad config directory:\n      " . $lc_rga . ":\n" .
+      "  It does not contain the obligatory \"main.dat\" file.\n" .
     "\n";
   }
   
