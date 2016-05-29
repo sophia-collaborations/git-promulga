@@ -116,10 +116,33 @@ The options are processed in the order that they appear on the command line.
 Each option overrides any earlier option to it's contrary.
 .TP
 .BR --help
+.br
 Displays this help file - and exits the program once
 you are finished reading it.
 .TP
-.BR -md " " [\fImode\fR]
+.BR -cnf " " <\fIdir\fR> " " <\fIident\fR>
+.br
+Sets the configuration directory to <\fIdir\fR> and the
+unique-identifier of the project to <\fIident\fR>.
+
+This option must come at the end of the command line -
+and if it is invoked, the program will not actually do
+the promulgation (in this run that is) but will only
+do the changes in the
+local repository's configuration.
+
+This option will throw a fatal error if (a) there are any
+arguments in the command line after the last argument to
+this option or (b) the directory specified does not pass
+the test of a valid configuration directory.
+
+This option was added in order to make it easier to
+set up external configuration directories --
+as external configuration directories is the way
+things are supposed to be done now.
+.TP
+.BR -md " " <\fImode\fR>
+.br
 Sets the mode (which in turn determines which directives are
 carried out) to the one identified by the name \fImode\fR.
 A mode-name should only have alphanumeric characters in it
