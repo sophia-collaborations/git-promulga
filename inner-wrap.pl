@@ -48,6 +48,27 @@ sub opto__cnf_do {
   exit(0);
 } &argola::setopt('-cnf',\&opto__cnf_do);
 
+sub opto__cnfi__do {
+  my $lc_dir;
+  my $lc_rpid;
+  
+  $lc_dir = &me::systo::cnfread('promulga.dir','x');
+  $lc_rpid = &me::systo::cnfread('promulga.repoid','solo');
+  
+  if ( $lc_dir eq 'x' )
+  {
+    system("echo");
+    system("echo","You have so far neglected to set up an external configuration directory.");
+    system("echo","  Learn about the -cnf option by reading the documentation, which can in turn");
+    system("echo","  be accessed by typing the command: git-promulga --help");
+    system("echo");
+  }
+  if ( $lc_dir ne 'x' ) { system("echo","DIRECTORY: " . $lc_dir . ":"); }
+  system("echo","  REPO ID: " . $lc_rpid . ":");
+  
+  exit(0);
+} &argola::setopt('-cnfi',\&opto__cnfi__do);
+
 
 
 &argola::help_opt('--help','help/git-promulga.1');
