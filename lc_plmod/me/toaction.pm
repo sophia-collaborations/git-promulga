@@ -10,6 +10,7 @@ use strict;
 my $moda;
 my $validty; # 10 once mode is validated - 0 until then
 my $stayontask; # Used to end (before end-of-file) the section where a mode is valid
+my $locatorix;
 
 
 sub go {
@@ -17,7 +18,10 @@ sub go {
   my @lc_filcb;
   my $lc_filcc;
   my $lc_cmdon;
-  my $lc_locato;
+  
+  # Uhh --- where am I?
+  $locatorix = `pwd`; chomp($locatorix);
+  &me::systo::locat_in($locatorix);
   
   # We must know what mode we are on:
   $moda = &me::modus::get();
@@ -34,9 +38,8 @@ sub go {
   
   if ( $validty < 5 )
   {
-    $lc_locato = `pwd`; chomp($lc_locato);
     die ( &me::modus::alr_out() . "\ngit-promulga: FATAL ERROR:\n" .
-      "DIRECTORY: " . $lc_locato . ":\n" .
+      "DIRECTORY: " . $locatorix . ":\n" .
       "    No such mode supported: " . $moda . ":\n" .
     "\n");
   }
@@ -80,10 +83,11 @@ sub aline {
   }
   if ( $lc_ok < 3 ) { return; }
   
-  # Validation by wildcard is illegal.
+  # Validation by wildcard is illegal -- except with previously-validated modes.
   if ( $lc_segtyp eq 'valid' )
   {
     if ( $lc_ok > 7 ) { $validty = 10; $stayontask = 10; }
+    if ( $validty > 5 ) { $validty = 10; $stayontask = 10; }
     return;
   }
   
@@ -175,6 +179,8 @@ git-promulga: FATAL ERROR:
   if ( $lc_segtyp eq 'push' ) { &me::brancha::do_push($lc_segcon); return; }
   if ( $lc_segtyp eq 'prcpull' ) { &me::brancha::do_prc_pull($lc_segcon); return; }
   if ( $lc_segtyp eq 'prcpush' ) { &me::brancha::do_prc_push($lc_segcon); return; }
+  if ( $lc_segtyp eq 'prcset' ) { &me::systo::do_prcset($lc_segcon); return; }
+  if ( $lc_segtyp eq 'impose' ) { &me::brancha::do_impose($lc_segcon); return; }
   if ( $lc_segtyp eq 'x' ) { $stayontask = 0; return; }
   
   # Now, a directive for when promulgation here implies
@@ -188,6 +194,11 @@ git-promulga: FATAL ERROR:
     &me::modus::rqs_set($lc2_mode); # Make the mode-request
     return;
   }
+  
+  die ( &me::modus::alr_out() . "\ngit-promulga: FATAL ERROR:\n  DIRECTORY: " . $locatorix . "\n" .
+    "      Non-existent directive-type: " . $lc_segtyp . ":\n" .
+  "\n");
+  
   
 }
 

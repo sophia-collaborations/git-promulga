@@ -4,6 +4,7 @@ use wraprg;
 use strict;
 
 my $prcval;
+my $locato;
 
 sub do_prcset {
   ($prcval) = split(/:/,$_[0]);
@@ -11,6 +12,15 @@ sub do_prcset {
 sub do_prcget {
   return $prcval;
 }
+
+
+sub locat_in {
+  $locato = $_[0];
+}
+sub locat_out {
+  return $locato;
+}
+
 
 sub do_prcsh {
   my $lc_modsr;
@@ -27,6 +37,12 @@ sub do_prcsh {
   foreach $lc_modb (@lc_moda)
   {
     if ( $lc_modb eq 'x-' ) { return; }
+    
+    if ( $lc_modb eq 'x' )
+    {
+      die "\nFATAL ERROR from failed persistent command:\n\n";
+    }
+    
     &aswesleep($lc_modb);
     
     system("echo","TRYING AGAIN: " . $lc_shel);

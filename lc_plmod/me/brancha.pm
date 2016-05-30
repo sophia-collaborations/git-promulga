@@ -4,6 +4,16 @@ use me::systo;
 use wraprg;
 use strict;
 
+sub do_impose {
+  my @lc_zet;
+  my $lc_a;
+  
+  @lc_zet = split(/:/,$_[0]);
+  &me::systo::do_prcsh("git checkout " . &wraprg::bsc($lc_zet[0]) . " --");
+  $lc_a = `git rev-parse HEAD`; chomp($lc_a);
+  &me::systo::do_prcsh("git checkout " . &wraprg::bsc($lc_zet[1]) . " --");
+  system("git","reset","--hard",$lc_a);
+}
 
 sub do_merge {
   my $lc_last;
