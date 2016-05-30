@@ -536,6 +536,28 @@ through every pull and push operation.
 A directive of this type simply runs the entire
 content section of the directive line as-is as
 a shell command.
+.TP
+.BR \fBx\fR
+.br
+A directive of this type halfway turns off the
+validation of any mode
+that it applies to.
+
+By \(dqhalfway\(dq it is meant that
+the mode isn't entirely invalidated
+in that \fBgit-promulga\fR
+remembers that the mode was previously validated
+and you won't get an error-message for selecting
+an invalid mode
+\- and that everything that was done while it was
+validated (including, if-applicable, the effects
+of any \fBcontinue-upward\fR
+directive) remain-done.
+But it also means that the mode is not
+entirely validated anymore either - in that
+it has to be re-validated for any further
+directives later on in the configuration file
+to have any applicability to that mode.
 .SH ENVIRONMENT VARIABLES
 The following environment variables are set by \fBgit-promulga\fR
 and as such can be used by shell commands.

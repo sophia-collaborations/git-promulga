@@ -9,6 +9,7 @@ use strict;
 
 my $moda;
 my $validty; # 10 once mode is validated - 0 until then
+my $stayontask; # Used to end (before end-of-file) the section where a mode is valid
 
 
 sub go {
@@ -62,6 +63,8 @@ sub aline {
   my @lc_nomlis;
   my $lc_nomech;
   my $lc_ok; # 0 = no match ; 5 = wildcard only ; 10 = match
+  
+  
   ($lc_segnom,$lc_segtyp,$lc_segcon) = split(quotemeta(':'),$_[0],3);
   if ( $lc_segtyp eq '' ) { return; } # No time wasted on comments.
   @lc_nomlis = split(quotemeta('/'),$lc_segnom);
@@ -80,7 +83,7 @@ sub aline {
   # Validation by wildcard is illegal.
   if ( $lc_segtyp eq 'valid' )
   {
-    if ( $lc_ok > 7 ) { $validty = 10; }
+    if ( $lc_ok > 7 ) { $validty = 10; $stayontask = 10; }
     return;
   }
   
@@ -88,6 +91,7 @@ sub aline {
   # be done if the mode in question hasn't already been
   # validated.
   if ( $validty < 5 ) { return; }
+  if ( $stayontask < 5 ) { return; }
   
   # Next -- for simple shell commands:
   if ( $lc_segtyp eq 'sh' )
@@ -171,6 +175,7 @@ git-promulga: FATAL ERROR:
   if ( $lc_segtyp eq 'push' ) { &me::brancha::do_push($lc_segcon); return; }
   if ( $lc_segtyp eq 'prcpull' ) { &me::brancha::do_prc_pull($lc_segcon); return; }
   if ( $lc_segtyp eq 'prcpush' ) { &me::brancha::do_prc_push($lc_segcon); return; }
+  if ( $lc_segtyp eq 'x' ) { $stayontask = 0; return; }
   
   # Now, a directive for when promulgation here implies
   # also some promulgation of a directory higher up in
