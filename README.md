@@ -31,15 +31,3 @@ Once you have installed __git-promulga__, if you wish to read the documentation
 type the following command:
 
     git-promulga --help
-
-It is important to connect the 'git' and the 'promulga' with a hyphen
-in this command because, though __git-promulga__ comes with
-a manual-page, it's install script does not install it -- so it
-can only be viewed through the command's __--help__ option.
-If you type the 'git' and the 'promulga' as separate words,
-for most purposes, that will not matter -- except in the case
-of the __--help__ option it will, because if you invoke the
-command through __git__ then, instead of passing the __--help__
-option to __git-promulga__, __git__ will simply try to process
-it itself by looking up the manual-page which (though present
-in the package) is not installed.
