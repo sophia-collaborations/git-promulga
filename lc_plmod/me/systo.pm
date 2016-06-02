@@ -21,6 +21,26 @@ sub locat_out {
   return $locato;
 }
 
+sub sleep {
+  my $lc_sec;
+  my $lc_txt;
+  my $lc_slsec;
+  
+  ($lc_sec,$lc_txt) = split(/:/,$_[0],2);
+  
+  # For silent-mode sleep:
+  if ( $lc_sec eq 's' )
+  {
+    $lc_slsec = split(/:/,$lc_txt);
+    sleep($lc_slsec);
+    return;
+  }
+  
+  
+  print ( $lc_txt . "\n" );
+  if ( $lc_sec ne 'x' ) { sleep($lc_sec); }
+}
+
 
 sub do_prcsh {
   my $lc_modsr;
