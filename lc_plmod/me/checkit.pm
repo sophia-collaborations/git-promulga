@@ -98,27 +98,30 @@ sub cycle {
       $lc_pwad = `pwd`; chomp($lc_pwad);
       &chobak_warnerr::prima_one(
         "\ngit-promulga: DEPRECATION WARNING:\n" .
-          "    DIRECTORY: " . $lc_pwad . ":\n" .
+          "    DIRECTORY: " . $lc_pwad . ":\n\n" .
           "The use of internal configuration directories in git-promulga has been\n" .
-          "deprecated and support for it will be discontinued at High Noon\n" .
-          "on July 4, 2017. Until that time, this warning will be accompanied\n" .
-          "by a pause of gradually increasing duration as to make sure that\n" .
-          "developers see the warning so that they can heed it.\n" .
+          "deprecated and support for it was to be discontinued. The date at which\n" .
+          "this legacy support will be discontinued has been extended to High Noon\n" .
+          "on September 1, 2017, but will not be extended further. Until that time,\n" .
+          "this warning will be accompanied by a pause of gradually increasing\n" .
+          "duration as to make sure that developers see the warning so that they\n" .
+          "can heed it. Once this grace period is over, this warning will be\n" .
+          "replaced with a Fatal Error.\n\n" .
           "  Move the configuration directory to a place in your filesystem\n" .
           "that is outside of your repository - and then use the '-cnf' option\n" .
           "of 'git-promulga' to set it as your external configuration directory.\n" .
         "\n",
         "\ngit-promulga: FATAL ERROR:\n" .
-          "    DIRECTORY: " . $lc_pwad . ":\n" .
+          "    DIRECTORY: " . $lc_pwad . ":\n\n" .
           "The use of internal configuration directories in git-promulga has been\n" .
-          "deprecated and support for it has been discontinued\n" .
+          "deprecated and support for it has been discontinued.\n\n" .
           "  Move the configuration directory to a place in your filesystem\n" .
           "that is outside of your repository - and then use the '-cnf' option\n" .
           "of 'git-promulga' to set it as your external configuration directory.\n" .
         "\n",
-        '2016-07-04--12-00-00',
+        '2016-06-10--12-00-00',
         20,
-        '2017-07-04--12-00-00'
+        '2017-09-01--12-00-00'
       );
     }
   }
