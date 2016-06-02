@@ -24,6 +24,13 @@ sub opto__cnf_do {
   my $lc_cfile;
   
   $lc_rga = &argola::getrg();
+  if ( !(&argola::yet()) )
+  {
+    die "\ngit-promulga: FATAL ERROR:\n" .
+      "  Insufficient number of arguments following the -cnf option.\n" .
+    "\n";
+  }
+  
   $lc_rgb = &argola::getrg();
   if ( &argola::yet() ) {
     die "\ngit-promulga: FATAL ERROR:\n" .
@@ -63,7 +70,13 @@ sub opto__cnfi__do {
     system("echo","  be accessed by typing the command: git-promulga --help");
     system("echo");
   }
-  if ( $lc_dir ne 'x' ) { system("echo","DIRECTORY: " . $lc_dir . ":"); }
+  if ( $lc_dir ne 'x' )
+  {
+    my $lc2_cf;
+    system("echo","DIRECTORY: " . $lc_dir . ":");
+    $lc2_cf = $lc_dir . '/main.dat';
+    if ( ! ( -f $lc2_cf ) ) { system("echo","BAD DIRECTORY:"); }
+  }
   system("echo","  REPO ID: " . $lc_rpid . ":");
   
   exit(0);
