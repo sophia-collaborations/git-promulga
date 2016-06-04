@@ -115,6 +115,18 @@ of the Git repository is identified
 as the configuration directory.
 However, if either of these criteria is not met,
 then the test for an internal configuration directory also fails.
+
+\fBIMPORTANT NOTICE:\fR Presently, the only file with the
+configuration directory that has any special value to
+\fBgit-promulga\fR is \(dqmain.dat\(dq.
+However, in case other files of special significance
+to \fBgit-promulga\fR need to be added in the future,
+the directory \(dqspcl\(dq within the configuration
+directory is reserved for that purpose.
+Therefore, the \(dqmain.dat\(dq file is a specifically
+significant file for \fBgit-promulga\fR - and if the
+\(dqspcl\(dq directory exists with in it, it too is
+of special significance (as are all it's contents).
 .SH OPTIONS
 The options are processed in the order that they appear on the command line.
 Each option overrides any earlier option to it's contrary.
