@@ -78,7 +78,7 @@ sub do_prc_pull {
   }
 }
 
-sub do_xa_prc_pull {
+sub do_xa_prc_act {
   my $lc_loksta;
   $lc_loksta = $ENV{'GIT_PROMULGA_DIR'};
   my $lc_cm;
