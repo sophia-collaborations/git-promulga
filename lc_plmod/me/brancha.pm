@@ -71,10 +71,21 @@ sub do_prc_pull {
       }
       foreach $lc_e_rm (@lc_remos)
       {
-        &me::systo::do_prcsh('git pull ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
+        #&me::systo::do_prcsh_ftl('git pull ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
+        &do_xa_prc_act('pull',$lc_e_rm,$lc_e_br_r);
       }
     }
   }
+}
+
+sub do_xa_prc_pull {
+  my $lc_loksta;
+  $lc_loksta = $ENV{'GIT_PROMULGA_DIR'};
+  my $lc_cm;
+  $lc_loksta = $ENV{'GIT_PROMULGA_DIR'};
+  $lc_loksta .= '/spcl/scrt';
+  system("echo",$lc_loksta); sleep(5);
+  system("git",@_);
 }
 
 sub do_push {
