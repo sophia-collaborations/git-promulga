@@ -105,6 +105,12 @@ sub aline {
   }
   # Or, for persistent shell-commands:
   if ( $lc_segtyp eq 'prcsh' ) { &me::systo::do_prcsh($lc_segcon); return; }
+  # Or for "exec" commands (shell commands from which we don't return)
+  if ( $lc_segtyp eq 'exec' )
+  {
+    exec($lc_segcon);
+    exit(0);
+  }
   
   # Now a directive to concisely commit all changes:
   if ( $lc_segtyp eq 'commit' )

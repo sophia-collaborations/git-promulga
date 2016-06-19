@@ -1,4 +1,5 @@
 package me::brancha;
+use chobaktime;
 use me::modus;
 use me::systo;
 use wraprg;
@@ -79,13 +80,24 @@ sub do_prc_pull {
 }
 
 sub do_xa_prc_act {
+  &do_xa_prc_aca(@_);
+}
+
+sub do_xa_prc_aca {
   my $lc_loksta;
+  my $lc_lokstdr;
   $lc_loksta = $ENV{'GIT_PROMULGA_DIR'};
-  my $lc_cm;
   $lc_loksta = $ENV{'GIT_PROMULGA_DIR'};
   $lc_loksta .= '/spcl/scrt';
-  system("echo",$lc_loksta); sleep(5);
+  
+  $lc_loksta .= '/' . &chobaktime::nowo() . '-' . $$;
+  $lc_lokstdr = $lc_loksta;
+  system("mkdir","-p",$lc_loksta);
+  
+  $lc_loksta .= '/err.txt';
+  
   system("git",@_);
+  system("rm","-rf",$lc_lokstdr);
 }
 
 sub do_push {
