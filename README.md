@@ -1,6 +1,35 @@
 # git-promulga
 A nutbag system for advanced synchronization operations in Git.
 
+# Overview
+__git-promulga__ allows you to automate actions that are specific
+to an individual clone of a __git__ repository.
+Originally, it was developed to do this for tasks related to the
+promulgation of changes to a program.
+
+The very first usage of __git-promulga__ was to synchronize a
+set of live web-pages with the desktop copy that was being used in their
+development.
+To make things even more difficult, there was the additional
+requirement that the CSS style-sheets be developed in a separate
+module - so that if the same pages needed to be hosted in a mirror
+site, the administrator of that mirror site could easily swap out
+the CSS style-sheets with an alternative more fitting of their
+site.
+
+This set of requirements would have been the source of a
+perpetual administrative headache. However, thanks to
+__git-promulga__, the very complex update procedure could
+be configured so that all of the several steps
+could be accomplished with one
+relatively-simple command.
+
+It was for such promulgation operations that __git-promulga__
+was initially developed.
+However, very early on,
+it was discovered that it was useful for all kinds of operations
+that were specific to individual clones.
+
 # Installation
 Before you install, make sure that you have your account configured
 in such a way that the 'bin' subdirectory of your home directory

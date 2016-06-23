@@ -410,6 +410,20 @@ And to do the same for "git push" commands invoked,
 the "push" directives have been replaced by "prcpush"
 directives.
 
+(\fBBUG WARNING:\fR
+There is still a bug in the implementation of the "prcpull"
+and "prcpush" directive-types.
+The only known effect of this bug is that it prevents
+the persistence feature from working.
+It is a development goal to fix this bug.
+However,
+in the mean time, the "prcpull" and "prcpush" directive
+types still work fine - but they are effectively the same
+as the "pull" and "push" directives that aren't
+supposed to have the persistence feature.)
+
+\-\-
+
 Last but not least - the "sh" directive has been replaced
 by a "prcsh" directive - meaning that if the shell command
 returns an error, it will be called over and over with
