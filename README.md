@@ -71,6 +71,11 @@ Documentation is not complete - but it is far enough along
 that you should be able to use it to do a reasonable amount
 of useful stuff with __git-promulga__.
 
+Once you have installed __git-promulga__, if you wish to read the documentation
+type the following command:
+
+    git-promulga --help
+
 To be able to access the documentation through the __man__
 user-command, then (depending on that command's defaults on
 your system) you may need to enter the following litany
@@ -80,8 +85,3 @@ have to re-type it each session):
 
     MANPATH="${HOME}/share/man:${MANPATH}"
     export MANPATH
-
-Once you have installed __git-promulga__, if you wish to read the documentation
-type the following command:
-
-    git-promulga --help
