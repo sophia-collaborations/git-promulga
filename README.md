@@ -23,6 +23,21 @@ the following litany:
       sh install.sh
     ) )
 
+Later, when it is time to update the software, then
+from the same directory that you entered the previous litany,
+enter the following litany.
+
+    # Updating the prerequisite -chobakwrap- infrastructure:
+    ( cd chobakwrap && (
+      git pull origin master
+      sh install.sh
+    ) )
+    # Updating -git-promulga- itself:
+    ( cd git-promulga && (
+      git pull origin master
+      sh install.sh
+    ) )
+
 Documentation is not complete - but it is far enough along
 that you should be able to use it to do a reasonable amount
 of useful stuff with __git-promulga__.
