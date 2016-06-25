@@ -177,6 +177,18 @@ active and among the modes specified in the line's modal
 section, then the directive-type's implementation is run
 using the contents of the content section of the line.
 
+Here is an example of what the contents of "main.dat" might look like.
+
+1. 
+2. ```main/full:valid:```
+3. ```*:commit:```
+4. ```main:remotes:origin:```
+5. ```full:remotes:origin:spare:```
+6. ```*:pull:master:dev:```
+7. ```*:merge:dev:master:dev:```
+8. ```*:push:master:dev:```
+9. ```*:x:```
+
 ## Further Documentation
 Documentation is not complete - but it is far enough along
 that by reading the manual page, you should be able to learn enough to do
