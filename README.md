@@ -72,11 +72,17 @@ enter the following litany.
 ## The Basics
 If you wish to use __git-promulga__ on a particular clone of a project, the first thing you
 have to do is link it to a configuration directory. You do this with the __-cnf__ option
-with a command like the following:
-```git-promulga -cnf <directory> <identifier>```
+with a command like the following that must be called from inside your local clone
+of the repository:
 
-In this command, <directory> must be replaced by the the location of the configuration directory, and <identifier> by a string that uniquely identifies that repository to said configuration directory. (To be safe, make sure that the identifier only has alphanumeric character, hyphens, and underscores.)
-The configuration directory should _not_ be at any location that the repository tracks - and should preferably
+    git-promulga -cnf <directory> <identifier>
+
+In this command, "<directory>" must be replaced by the the location of the
+configuration directory, and "<identifier>" by a string that uniquely identifies
+that repository to said configuration directory. (To be safe, make sure that
+the identifier only has alphanumeric character, hyphens, and underscores.)
+The configuration directory should _not_ be at any location that the
+repository tracks - and should preferably
 be in a place of your filesystem that is clearly outside your git repository.
 
 For a directory to be considered to be a valid configuration directory by __git-promulga__, it must
@@ -86,6 +92,31 @@ if there exists such a directory inside the configuration directory (which, for 
 that "spcl" is reserved for later versions). However, aside from the "main.dat" file and the "spcl" directory,
 the rest of the configuration directory may be used as a place to store whatever resources these
 resources are configured to require.
+
+Obviously, you will get a fatal error if you specify a directory that is not a valid configuration
+directory. However, once you have linked the repository to such a directory, you will not need
+to do so again unless there is a change in where the configuration directory of that repository
+needs to be re-located - or unless you erase and re-clone the repository.
+
+Once linked to a configuration directory, you can run __git-promulga__ by typing the following
+command from within the repository:
+
+    git-promulga -md <mode>
+
+In this command, "<mode>" needs to be replaced by the mode identifier -
+which is a string that is used to determine which directives inside the
+"main.dat" file get executed.
+The manual page has a more complete explanation of which characters
+are legal in a mode identifier - but as long as you stick to
+alphanumeric characters, you're pretty much safe.
+
+The default mode is "main" - which means that if you type ...
+
+    git-promulga
+
+... that will be the same as if you type:
+
+    git-promulga -md main
 
 ## Further Documentation
 Documentation is not complete - but it is far enough along
