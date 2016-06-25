@@ -118,6 +118,10 @@ The default mode is "main" - which means that if you type ...
 
     git-promulga -md main
 
+Now, the "main.dat" file is really just a collection of directive lines
+that are gone through from beginning to end - each of them either
+executed or ignored.
+
 ## Further Documentation
 Documentation is not complete - but it is far enough along
 that by reading the manual page, you should be able to learn enough to do
