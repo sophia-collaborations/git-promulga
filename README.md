@@ -179,7 +179,7 @@ using the contents of the content section of the line.
 
 Here is an example of what the contents of "main.dat" might look like.
 
-1. 
+1.
 2. ```main/full:valid:```
 3. ```*:commit:```
 4. ```main:remotes:origin:```
@@ -188,6 +188,122 @@ Here is an example of what the contents of "main.dat" might look like.
 7. ```*:merge:dev:master:dev:```
 8. ```*:push:master:dev:```
 9. ```*:x:```
+
+Okay - in this repository, __git-promulga__ recognizes
+three modes ("main" specified in line 1 and "out" and
+"in" specified in line 2).
+
+Line 3 is a directive of type "commit". As the mode
+listed is the wild-card asterisk, it pertains to all
+modes that have thus-far been validated. Directives
+of this type do more than just "git commit". They also
+take care of all the staging and everything so that
+you don’t have to worry about that.
+
+So, if __git-promulga__ is invoked with a valid mode,
+then after line 3, all changes since last time will
+have been staged and committed. However, they will
+be restricted to the local repository.
+
+Line 4 is a directive of type "remotes". It’s content
+section is nothing more or less than a colon-separated
+list of all the Git remotes that subsequent pull and
+push commands will pull and push from (at least until
+a later directive of this type changes it). For this
+reason, in the next line (Line 5), it is from the "origin"
+remote that the "master" branch and then the "dev"
+branch are pulled.
+
+After Line 5, the local clone will have the "dev" branch
+checked out (if it exists - more on the limitations
+of this directive-type in it’s section) because that
+is the last branch listed in this line.
+
+Line 5, of course, will be ignored if the mode that
+the program is run in is "out", because the modal section
+limits it to the "main" and "in" modes.
+
+Line 6 merges the two branches of the local repository
+- once again (usually) leaving the "dev" branch checked
+out - because it is (once again) the last branch mentioned.
+
+Line 7 simiarly pushes the commits of the "master"
+and "dev" branches (still to the "origin" remote, because
+that never got changed) - unless __git-promulga__ is
+running in mode "in".
+
+Finally comes Line 8, a directive of type "sh" - which
+means that it’s content section is simply run as-is
+as a shell-command. This line (unless your are in mode
+"in") opens a SSH connection to the account "myself"
+on the server "some.where" (presumably where the "origin"
+branch is located). Instead of opening a terminal session
+on SSH, it pipes to SSH the contents of the file "to-myself.cmd"
+inside of the __git-promulga__ configuration directory.
+
+As noted - the source that gets piped to SSH is in
+the ".promulga" directory. This is because __git-promulga__
+insists that the entire directory must be git-ignored,
+yet "main.dat" is the only file within it that is of
+special significance to __git-promulga__. That makes
+this directory a convenient place to put resource files
+like this.
+
+But before we end this section of the documentation
+there is one more thing to discuss. Everything we did
+so far is fine if the server we are working with grants
+access absolutely 100% of the time and the internet
+connection to it is equally reliable. Unfortunately,
+we all know that this is a dubious proposition. For
+this reason, we have directive-types that use a feature
+called ’persistence’. That means that if certain
+actions do not work the first time, they try again.
+
+Here is a version of the sample "main.dat" above, only
+modified so that it uses such directive-types.
+
+1. main:valid:
+2. out/in:valid:
+3. *:commit:
+4. *:prcset:5/10/15/20/25/30/35/40/45/50/55/60:
+5. *:remotes:origin:
+6. main/in:prcpull:master:dev:
+7. *:merge:dev:master:dev:
+8. main/out:prcpush:master:dev:
+9. main/out:prcsh:ssh myself@some.where < "${GIT_PROMULGA_DIR}/to-myself.cmd"
+
+A new Line 4 is added (causing the old Lines 4 thru
+8 to now become Lines 5 thru 9). This new Line 4 is
+of directive-type "prcset". It sets the persistence
+schedule - which is a list of numbers separated by
+forward-slashes. As a result of Line 4, henceforth,
+if a persistent operation fails, it will be attempted
+again 5 seconds afterwards. If again it fails, it will
+wait another 10 seconds and try again -- then, upon
+another failure, 15 seconds - and so forth. Hopefully,
+the operation will succeed before it reaches the end
+of the list. But if at the end (if it fails after the
+final wait - which is 60-seconds) then it will give
+up and move on.
+
+A few of the later directives have been modified to
+use this persistence. For example, the "pull" directives
+have been replaced with "prcpull" directives. The only
+difference is that the "git pull" command invoked for
+every remote-branch combination will be called with
+this persistence. And to do the same for "git push"
+commands invoked, the "push" directives have been replaced
+by "prcpush" directives.
+
+(__BUG WARNING__: There is still a bug in the implementation
+of the "prcpull" and "prcpush" directive-types. The
+only known effect of this bug is that it prevents the
+persistence feature from working. It is a development
+goal to fix this bug. However, in the mean time, the
+"prcpull" and "prcpush" directive types still work
+fine - but they are effectively the same as the "pull"
+and "push" directives that aren’t supposed to have
+the persistence feature.)
 
 ## Further Documentation
 Documentation is not complete - but it is far enough along
