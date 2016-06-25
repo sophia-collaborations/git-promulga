@@ -179,15 +179,14 @@ using the contents of the content section of the line.
 
 Here is an example of what the contents of "main.dat" might look like.
 
-1.
-2. ```main/full:valid:```
+1. ```main:valid:```
+2. ```out/in:valid:```
 3. ```*:commit:```
-4. ```main:remotes:origin:```
-5. ```full:remotes:origin:spare:```
-6. ```*:pull:master:dev:```
-7. ```*:merge:dev:master:dev:```
-8. ```*:push:master:dev:```
-9. ```*:x:```
+4. ```*:remotes:origin:```
+5. ```main/in:pull:master:dev:```
+6. ```*:merge:dev:master:dev:```
+7. ```main/out:push:master:dev:```
+8. ```main/out:sh:ssh myself@some.where < "${GIT_PROMULGA_DIR}/to-myself.cmd"```
 
 Okay - in this repository, __git-promulga__ recognizes
 three modes ("main" specified in line 1 and "out" and
@@ -224,7 +223,7 @@ the program is run in is "out", because the modal section
 limits it to the "main" and "in" modes.
 
 Line 6 merges the two branches of the local repository
-- once again (usually) leaving the "dev" branch checked
+\- once again (usually) leaving the "dev" branch checked
 out - because it is (once again) the last branch mentioned.
 
 Line 7 simiarly pushes the commits of the "master"
@@ -262,15 +261,15 @@ actions do not work the first time, they try again.
 Here is a version of the sample "main.dat" above, only
 modified so that it uses such directive-types.
 
-1. main:valid:
-2. out/in:valid:
-3. *:commit:
-4. *:prcset:5/10/15/20/25/30/35/40/45/50/55/60:
-5. *:remotes:origin:
-6. main/in:prcpull:master:dev:
-7. *:merge:dev:master:dev:
-8. main/out:prcpush:master:dev:
-9. main/out:prcsh:ssh myself@some.where < "${GIT_PROMULGA_DIR}/to-myself.cmd"
+1. ```main:valid:```
+2. ```out/in:valid:```
+3. ```*:commit:```
+4. ```*:prcset:5/10/15/20/25/30/35/40/45/50/55/60:```
+5. ```*:remotes:origin:```
+6. ```main/in:prcpull:master:dev:```
+7. ```*:merge:dev:master:dev:```
+8. ```main/out:prcpush:master:dev:```
+9. ```main/out:prcsh:ssh myself@some.where < "${GIT_PROMULGA_DIR}/to-myself.cmd"```
 
 A new Line 4 is added (causing the old Lines 4 thru
 8 to now become Lines 5 thru 9). This new Line 4 is
