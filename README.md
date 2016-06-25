@@ -305,7 +305,9 @@ and "push" directives that aren’t supposed to have
 the persistence feature.)
 
 ## Further Documentation
-Documentation is not complete - but it is far enough along
+To learn more about the usage of __git-promulga__,
+refer to it's manual-page.
+The manual-page is not complete - but it is far enough along
 that by reading the manual page, you should be able to learn enough to do
 most-anything of which __git-promulga__ is capable.
 
