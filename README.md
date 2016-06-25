@@ -71,6 +71,11 @@ Documentation is not complete - but it is far enough along
 that you should be able to use it to do a reasonable amount
 of useful stuff with __git-promulga__.
 
+One way to see at the documentation is
+to [look at the online HTML rendition of the manual-page](http://sshapira.com/git-promulga/files/man-page.html).
+
+Or, after installing the program, you can see the documentation on your own local
+machine.
 Once you have installed __git-promulga__, if you wish to read the documentation
 type the following command:
 
