@@ -67,9 +67,30 @@ enter the following litany.
       sh install.sh
     ) )
 
+# Usage
+
+## The Basics
+If you wish to use __git-promulga__ on a particular clone of a project, the first thing you
+have to do is link it to a configuration directory. You do this with the __-cnf__ option
+with a command like the following:
+```git-promulga -cnf <directory> <identifier>```
+
+In this command, <directory> must be replaced by the the location of the configuration directory, and <identifier> by a string that uniquely identifies that repository to said configuration directory. (To be safe, make sure that the identifier only has alphanumeric character, hyphens, and underscores.)
+The configuration directory should _not_ be at any location that the repository tracks - and should preferably
+be in a place of your filesystem that is clearly outside your git repository.
+
+For a directory to be considered to be a valid configuration directory by __git-promulga__, it must
+have inside it a file called "main.dat". Aside from the "main.dat", the only contents of the configuration
+directory that have any special significance to __git-promulga__ are the contents of the directory named "spcl"
+if there exists such a directory inside the configuration directory (which, for now, really just means
+that "spcl" is reserved for later versions). However, aside from the "main.dat" file and the "spcl" directory,
+the rest of the configuration directory may be used as a place to store whatever resources these
+resources are configured to require.
+
+## Further Documentation
 Documentation is not complete - but it is far enough along
-that you should be able to use it to do a reasonable amount
-of useful stuff with __git-promulga__.
+that by reading the manual page, you should be able to learn enough to do
+most-anything of which __git-promulga__ is capable.
 
 One way to see at the documentation is
 to [look at the online HTML rendition of the manual-page](http://sshapira.com/git-promulga/files/man-page.html).
