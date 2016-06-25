@@ -121,6 +121,61 @@ The default mode is "main" - which means that if you type ...
 Now, the "main.dat" file is really just a collection of directive lines
 that are gone through from beginning to end - each of them either
 executed or ignored.
+Everything before the first colon of each line
+is called the "modal section" and determines which
+mode or modes directive is applicable to.
+Everything between the first and second colon of each line
+is called the "activity section" and
+is the directive-type - which determines what basic kind of
+actions is done by that directive.
+Everything after the second column
+is called the "content section" and is simply the argumentation
+that is passed to the directive.
+Should this argumentation section contain additional colons,
+the directive-type will determine whether or not those colons
+have any special significance, or whether they are just
+literal colons.
+
+Every line that begins with two colons one after the other
+is considered to be a comment line.
+
+Of all the directive-types, directives of type "valid" are unique
+in that it is their job to validate and activate all modes that
+are specified in the.
+In a sense, "valid" directives can, for this reason, be considered
+to be a separate category from directives altogether - so that the lines
+of the file can be categorized into "directive lines" which
+contain regular directives and
+"validation lines" that contain these special validation directives.
+Regular directives, those found in the directive lines, will only
+be executed if the mode selected by the __-md__ option is
+already-validated, currently-active, and within the scope of
+what is specified in the modal section of the directive line.
+
+The modal section is a list of mode-identifiers who's items
+are separated by forward-slashes.
+Non-printable characters are forbidden in the modal section.
+If one of these mode-identifiers is the simple wildcard character
+('*') then the way it is interpreted depends on whether this is
+a validation line or a directive line.
+In the case of a directive line, it is interpreted as
+a reference to all modes that are already-validated and currently-active.
+In the case of a validation line, it applies to all modes that
+are already-validated, regardless of not whether or not they are
+still active.
+
+The second section is the modal section - and non-printable characters
+are illegal here too. As a matter of fact, the only thing allowed here
+is the name of one valid directive-type.
+If the specified directive-type is "valid", any mode (or modes)
+specified in the modal section will be validated (in case they are not
+already validated)
+and activated (in case they are not currently active).
+If the specified directive is of any other valid type,
+then if the mode selected by the __-md__ option is both
+active and among the modes specified in the line's modal
+section, then the directive-type's implementation is run
+using the contents of the content section of the line.
 
 ## Further Documentation
 Documentation is not complete - but it is far enough along
