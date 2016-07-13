@@ -82,6 +82,12 @@ sub opto__cnfi__do {
   exit(0);
 } &argola::setopt('-cnfi',\&opto__cnfi__do);
 
+sub opto__cnfd__do {
+  my $lc_dir;
+  $lc_dir = &me::systo::cnfread('promulga.dir','x');
+  exec("echo",$lc_dir);
+} &argola::setopt('-cnfd',\&opto__cnfd__do);
+
 
 
 &argola::help_opt('--help','help/git-promulga.1');
