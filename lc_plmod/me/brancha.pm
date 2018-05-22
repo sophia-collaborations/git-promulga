@@ -86,6 +86,9 @@ sub do_xa_prc_act {
 sub do_xa_prc_aca {
   my $lc_loksta;
   my $lc_lokstdr;
+  my $lc_brcurl;
+  my $lc_cm;
+  my $lc_pulp;
   $lc_loksta = $ENV{'GIT_PROMULGA_DIR'};
   $lc_loksta = $ENV{'GIT_PROMULGA_DIR'};
   $lc_loksta .= '/spcl/scrt';
@@ -96,7 +99,17 @@ sub do_xa_prc_aca {
   
   $lc_loksta .= '/err.txt';
   
-  system("git",@_);
+  $lc_pulp = 0;
+  if ( $_[0] eq 'pull' ) { $lc_pulp = 10; }
+  if ( $_[0] eq 'push' ) { $lc_pulp = 10; }
+  $lc_brcurl = 'xxx';
+  if ( $lc_pulp > 5 )
+  {
+    $lc_cm = 'git remote get-url ' . &wraprg::bsc($_[1]);
+    $lc_brcurl = `$lc_cm`; chomp($lc_brcurl);
+    if ( $lc_brcurl ne '' ) { &me::randsleep::may_sleep(); }
+  }
+  if ( $lc_brcurl ne '' ) { system("git",@_); }
   system("rm","-rf",$lc_lokstdr);
 }
 
@@ -126,6 +139,7 @@ sub do_prc_push {
       {
         foreach $lc_e_rm (@lc_remos)
         {
+          &me::randsleep::ifremoteok($lc_e_rm);
           &me::systo::do_prcsh('git push ' . &wraprg::bsc($lc_e_rm) . ' ' . &wraprg::bsc($lc_e_br_r));
         }
       }

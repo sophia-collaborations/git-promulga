@@ -4,6 +4,7 @@ use me::modus;
 use me::var_lit;
 use me::brancha;
 use me::systo;
+use me::randsleep;
 use strict;
 
 
@@ -188,6 +189,7 @@ git-promulga: FATAL ERROR:
   if ( $lc_segtyp eq 'prcset' ) { &me::systo::do_prcset($lc_segcon); return; }
   if ( $lc_segtyp eq 'impose' ) { &me::brancha::do_impose($lc_segcon); return; }
   if ( $lc_segtyp eq 'sleep' ) { &me::systo::do_sleep($lc_segcon); return; }
+  if ( $lc_segtyp eq 'lrand' ) { &me::randsleep::set_params($lc_segcon); return; }
   if ( $lc_segtyp eq 'x' ) { $stayontask = 0; return; }
   
   # Now, a directive for when promulgation here implies
