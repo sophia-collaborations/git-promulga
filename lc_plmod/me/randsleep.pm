@@ -6,7 +6,9 @@ use strict;
 
 my $min_sleep = 0;
 my $var_sleep = 0;
-my $here_yet = 0; # We will not sleep first time
+
+# 0 = We will not sleep first time : 10 = we will
+my $here_yet = 10;
 
 
 sub set_params {
