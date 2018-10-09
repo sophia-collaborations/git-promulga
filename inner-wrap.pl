@@ -73,11 +73,11 @@ sub opto__cnfi__do {
   if ( $lc_dir ne 'x' )
   {
     my $lc2_cf;
-    system("echo","DIRECTORY: " . $lc_dir . ":");
+    system("echo","DIRECTORY: " . $lc_dir . " :");
     $lc2_cf = $lc_dir . '/main.dat';
     if ( ! ( -f $lc2_cf ) ) { system("echo","BAD DIRECTORY:"); }
   }
-  system("echo","  REPO ID: " . $lc_rpid . ":");
+  system("echo","  REPO ID: " . $lc_rpid . " :");
   
   exit(0);
 } &argola::setopt('-cnfi',\&opto__cnfi__do);
